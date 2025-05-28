@@ -1,34 +1,10 @@
-import { useEffect, useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import Header from "./common/header/Header";
 
-function App() {
-  const [item, setItem] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-
-    fetch("/test")
-      .then((response) => response.text())
-      .then((data) => {
-        setItem(data);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <div className="API-items">{item}</div>
-      </header>
+    <div className="app-body">
+      <Header onTestA={() => console.log("Test [A]")} onTestB={() => console.log("Test [B]")} />
     </div>
   );
 }
-
-export default App;
