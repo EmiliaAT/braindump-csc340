@@ -6,7 +6,7 @@ export default function Layout() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    let suffix: "Dashboard" | "Discover" | undefined = undefined;
+    let suffix: "Dashboard" | "Discover" | "Collections" | undefined = undefined;
 
     switch (location.pathname) {
         case "/dashboard":
@@ -15,14 +15,18 @@ export default function Layout() {
         case "/discover":
             suffix = "Discover";
             break;
+        case "/collections":
+            suffix = "Collections";
+            break;
     }
 
-    const handleTestA = () => navigate("/dashboard", { replace: true });
-    const handleTestB = () => navigate("/discover", { replace: true });
+    const handleDashboard = () => navigate("/dashboard", { replace: true });
+    const handleDiscover = () => navigate("/discover", { replace: true });
+    const handleCollections = () => navigate("/collections", { replace: true });
 
     return (
         <div className="app-container">
-            <Header suffix={suffix} onDashboard={handleTestA} onDiscover={handleTestB} />
+            <Header suffix={suffix} onDashboard={handleDashboard} onDiscover={handleDiscover} onCollections={handleCollections} />
             <main className="main-container">
                 <Outlet />
             </main>
