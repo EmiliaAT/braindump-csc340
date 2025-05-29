@@ -2,12 +2,13 @@ import { MouseEventHandler } from 'react';
 import './Header.css';
 
 interface HeaderProps {
-    suffix: "Dashboard" | "Discover" | undefined;
+    suffix: "Dashboard" | "Discover" | "Collections" | undefined;
     onDashboard: MouseEventHandler<HTMLButtonElement>;
     onDiscover: MouseEventHandler<HTMLButtonElement>;
+    onCollections: MouseEventHandler<HTMLButtonElement>;
 }
 
-export default function Header({ suffix, onDashboard, onDiscover }: HeaderProps) {
+export default function Header({ suffix, onDashboard, onDiscover, onCollections }: HeaderProps) {
     // ...
     const suffixComponent = (suffix !== undefined)
         ? <p className="header-suffix">{suffix}</p>
@@ -24,6 +25,7 @@ export default function Header({ suffix, onDashboard, onDiscover }: HeaderProps)
             <div className="header-button-container">
                 <button className="header-button" onClick={onDashboard}>Dashboard</button>
                 <button className="header-button" onClick={onDiscover}>Discover</button>
+                <button className="header-button" onClick={onCollections}>Collections</button>
             </div>
         </header>
     );

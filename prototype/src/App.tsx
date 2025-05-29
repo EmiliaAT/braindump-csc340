@@ -6,6 +6,7 @@ import Layout from "./common/layout/Layout";
 import User from "./common/user/User";
 import Article from "./common/article/Article";
 import Collection from "./common/collection/Collection";
+import Collections from "./pages/collections/Collections";
 
 export default function App() {
   const users = [new User("User [A]", [], []), new User("User [B]", [], [])];
@@ -20,6 +21,7 @@ export default function App() {
         <Route index element={<Navigate to="/dashboard" replace={true} />} />
         <Route path="dashboard" element={<Dashboard user={users[0]} articles={articles} collections={collections} />} />
         <Route path="discover" element={<Discover articles={articles} collections={collections} />} />
+        <Route path="collections" element={<Collections user={users[0]} articles={articles} collections={collections} />} />
       </Route>
     </Routes>
   );
