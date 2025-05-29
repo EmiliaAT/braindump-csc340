@@ -22,7 +22,7 @@ export default function Layout() {
 
     return (
         <div className="app-container">
-            <Header suffix={suffix} onTestA={handleTestA} onTestB={handleTestB} />
+            <Header suffix={suffix} onDashboard={handleTestA} onDiscover={handleTestB} />
             <main className="main-container">
                 <Outlet />
             </main>

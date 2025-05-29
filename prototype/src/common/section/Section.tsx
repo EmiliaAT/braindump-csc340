@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './Section.css';
-import Article from '../../common/article/Article';
-import Collection from '../../common/collection/Collection';
+import Article from '../article/Article';
+import Collection from '../collection/Collection';
 
 export default function Section({ title, isOpen, children }: { title: string, isOpen: boolean, children?: (Article | Collection)[] }) {
     // ...
@@ -9,12 +9,12 @@ export default function Section({ title, isOpen, children }: { title: string, is
 
     // ...
     const articleCard = (article: Article) => (
-        <div className="dashboard-section-card">
-            <div className="dashboard-card-header">
-                <p className="dashboard-card-title">{article.getTitle()}</p>
-                <p className="dashboard-card-author">{"- " + article.getAuthor().getName()}</p>
+        <div className="section-card" key={article.getTitle() + "-" + article.getAuthor().getName()}>
+            <div className="section-card-header">
+                <p className="section-card-title">{article.getTitle()}</p>
+                <p className="section-card-author">{"- " + article.getAuthor().getName()}</p>
             </div>
-            <div className="dashboard-card-content">
+            <div className="section-card-content">
                 {"\"" + article.getContent() + "\""}
             </div>
         </div>
@@ -22,12 +22,12 @@ export default function Section({ title, isOpen, children }: { title: string, is
 
     // ...
     const collectionCard = (collection: Collection) => (
-        <div className="dashboard-section-card">
-            <div className="dashboard-card-header">
-                <p className="dashboard-card-title">{collection.getTitle()}</p>
-                <p className="dashboard-card-author">{"- " + collection.getAuthor().getName()}</p>
+        <div className="section-card" key={collection.getTitle() + "-" + collection.getAuthor().getName()}>
+            <div className="section-card-header">
+                <p className="section-card-title">{collection.getTitle()}</p>
+                <p className="section-card-author">{"- " + collection.getAuthor().getName()}</p>
             </div>
-            <div className="dashboard-card-content">
+            <div className="section-card-content">
                 {collection.getArticles().map((article) => <p>{"- " + article.getTitle() + ", " + article.getAuthor().getName()}</p>)}
             </div>
         </div>
@@ -36,8 +36,8 @@ export default function Section({ title, isOpen, children }: { title: string, is
     // ...
     const content = () => (
         <>
-            <hr className="dashboard-section-break" />
-            <div className="dashboard-section-content">
+            <hr className="section-break" />
+            <div className="section-content">
                 {
                     children?.map((child) => (child instanceof Article)
                         ? articleCard(child)
@@ -51,11 +51,11 @@ export default function Section({ title, isOpen, children }: { title: string, is
     );
 
     return (
-        <div className="dashboard-section">
+        <div className="section-container">
             {/* ... */}
-            <div className="dashboard-section-header">
-                <h2 className="dashboard-section-title">{title}</h2>
-                <h2 className="dashboard-section-toggle" onClick={() => setOpen(!open)}>{"[" + (open ? "v" : ">") + "]"}</h2>
+            <div className="section-header">
+                <h2 className="section-title">{title}</h2>
+                <h2 className="section-toggle" onClick={() => setOpen(!open)}>{"[" + (open ? "v" : ">") + "]"}</h2>
             </div>
             {/* ... */}
             {open ? content() : <></>}
