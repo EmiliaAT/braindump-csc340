@@ -3,13 +3,13 @@ import './Header.css';
 
 interface HeaderProps {
     suffix: "Dashboard" | "Discover" | undefined;
-    onTestA: MouseEventHandler<HTMLButtonElement>;
-    onTestB: MouseEventHandler<HTMLButtonElement>;
+    onDashboard: MouseEventHandler<HTMLButtonElement>;
+    onDiscover: MouseEventHandler<HTMLButtonElement>;
 }
 
-export default function Header({ suffix, onTestA, onTestB }: HeaderProps) {
+export default function Header({ suffix, onDashboard, onDiscover }: HeaderProps) {
     // ...
-    const suffixComponent = (typeof suffix !== undefined)
+    const suffixComponent = (suffix !== undefined)
         ? <p className="header-suffix">{suffix}</p>
         : <></>;
 
@@ -22,8 +22,8 @@ export default function Header({ suffix, onTestA, onTestB }: HeaderProps) {
             </div>
             {/* ... */}
             <div className="header-button-container">
-                <button className="header-button" onClick={onTestA}>Test A</button>
-                <button className="header-button" onClick={onTestB}>Test B</button>
+                <button className="header-button" onClick={onDashboard}>Dashboard</button>
+                <button className="header-button" onClick={onDiscover}>Discover</button>
             </div>
         </header>
     );

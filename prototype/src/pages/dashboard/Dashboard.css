@@ -4,3 +4,17 @@
     gap: 2rem;
     padding: 2rem 5%;
 }
+
+.dashboard-greeting-title {
+    font-family: "Poppins";
+    font-weight: 600;
+    color: darkslategray;
+}
+
+.dashboard-greeting-break {
+    display: block;
+    height: 1px;
+    padding: 0;
+    border: 0;
+    border-top: 2px solid lightgray;
+}

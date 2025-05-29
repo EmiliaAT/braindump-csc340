@@ -1,9 +1,9 @@
-.dashboard-section {
+.section-container {
     padding: 2rem;
     border: 8px solid lightgray;
 }
 
-.dashboard-section-header {
+.section-header {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -11,21 +11,21 @@
     cursor: pointer;
 }
 
-.dashboard-section-title {
+.section-title {
     font-family: 'Poppins';
     font-size: 1.5rem;
     font-weight: 400;
     color: darkslategray;
 }
 
-.dashboard-section-toggle {
+.section-toggle {
     font-family: monospace;
     font-size: 1.5rem;
     font-weight: 400;
     color: lightgray;
 }
 
-.dashboard-section-break {
+.section-break {
     display: block;
     height: 1px;
     margin: 1rem 0;
@@ -34,13 +34,13 @@
     border-top: 2px solid lightgray;
 }
 
-.dashboard-section-content {
+.section-content {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
 }
 
-.dashboard-section-card {
+.section-card {
     display: flex;
     flex-direction: column;
     padding: 2rem;
@@ -50,20 +50,20 @@
     gap: 1rem;
 }
 
-.dashboard-card-header {
+.section-card-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.dashboard-card-title {
+.section-card-title {
     color: darkslategray;
 }
 
-.dashboard-card-author {
+.section-card-author {
     color: lightgray;
 }
 
-.dashboard-card-content {
+.section-card-content {
     color: lightgray;
 }

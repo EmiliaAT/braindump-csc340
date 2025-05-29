@@ -2,24 +2,29 @@ import Article from '../../common/article/Article';
 import Collection from '../../common/collection/Collection';
 import User from '../../common/user/User';
 import './Dashboard.css'
-import Section from './Section';
+import Section from '../../common/section/Section';
 
-export default function Dashboard() {
-    const users = [new User("User [A]", [], []), new User("User [B]", [], [])];
+interface DashboardProps {
+    user: User;
+    articles: Article[];
+    collections: Collection[];
+}
 
-    const articles = [new Article("Article [A]", users[0], "Test"), new Article("Article [B]", users[1], "Test"), new Article("Article [C]", users[0], "Test")];
-
-    const collections = [new Collection("Collection [A]", users[0], [articles[0], articles[2]]), new Collection("Collection [B]", users[1], [articles[1]])];
-
+export default function Dashboard({ user, articles, collections }: DashboardProps) {
     return (
         <div className="dashboard-container">
             {/* ... */}
-            <Section title="Recent Articles" isOpen={true}>
-                {articles}
+            <div className="dashboard-greeting-container">
+                <h1 className="dashboard-greeting-title">Hello, {user.getName()}!</h1>
+            </div>
+            <hr className="dashboard-greeting-break" />
+            {/* ... */}
+            <Section title="Your Articles" isOpen={true}>
+                {articles.filter((article) => article.getAuthor() === user)}
             </Section>
             {/* ... */}
-            <Section title="Recent Collections" isOpen={true}>
-                {collections}
+            <Section title="Your Collections" isOpen={true}>
+                {collections.filter((collection) => collection.getAuthor() === user)}
             </Section>
         </div>
     );
