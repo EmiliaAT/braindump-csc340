@@ -1,0 +1,33 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 5%;
+}
+
+.dashboard-section {
+    padding: 2rem;
+    border: 8px solid lightgray;
+}
+
+.dashboard-section-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.dashboard-section-title {
+    font-family: 'Poppins';
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: darkslategray;
+}
+
+.dashboard-section-toggle {
+    font-family: monospace;
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: lightgray;
+}

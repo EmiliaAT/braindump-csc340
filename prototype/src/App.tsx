@@ -1,10 +1,17 @@
 import "./App.css";
-import Header from "./common/header/Header";
+import { Navigate, Route, Routes } from "react-router-dom";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Discover from "./pages/discover/Discover";
+import Layout from "./common/layout/Layout";
 
 export default function App() {
   return (
-    <div className="app-body">
-      <Header onTestA={() => console.log("Test [A]")} onTestB={() => console.log("Test [B]")} />
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Navigate to="/dashboard" replace={true} />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="discover" element={<Discover />} />
+      </Route>
+    </Routes>
   );
 }

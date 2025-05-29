@@ -3,13 +3,16 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 2rem;
+    padding: 1rem 3rem;
     background-color: lightgray;
 }
 
 .header-title-container {
+    display: flex;
+    flex-direction: row;
     font-family: 'Poppins';
-    font-size: 30px;
+    font-size: 2rem;
+    gap: 0.5rem;
 }
 
 .header-title {
@@ -23,6 +26,10 @@
     /* text-transform: uppercase; */
 }
 
+.header-suffix {
+    color: white;
+}
+
 .header-button-container {
     display: flex;
     flex-direction: row;
@@ -31,8 +38,8 @@
 
 .header-button {
     display: inline-block;
-    min-width: 5rem;
-    padding: 15px 32px;
+    min-width: 6rem;
+    min-height: 3rem;
     border: 5px;
     border-color: lightgray;
     border-radius: 8px;
