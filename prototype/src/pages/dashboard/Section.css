@@ -41,7 +41,29 @@
 }
 
 .dashboard-section-card {
-    background-color: lightgray;
+    display: flex;
+    flex-direction: column;
     padding: 2rem;
+    border: 8px solid lightgray;
+    border-radius: 16px;
     font-family: "Poppins";
+    gap: 1rem;
+}
+
+.dashboard-card-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.dashboard-card-title {
+    color: darkslategray;
+}
+
+.dashboard-card-author {
+    color: lightgray;
+}
+
+.dashboard-card-content {
+    color: lightgray;
 }

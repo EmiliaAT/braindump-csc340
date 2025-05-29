@@ -1,41 +1,25 @@
+import Article from '../../common/article/Article';
+import Collection from '../../common/collection/Collection';
+import User from '../../common/user/User';
 import './Dashboard.css'
 import Section from './Section';
 
 export default function Dashboard() {
+    const users = [new User("User [A]", [], []), new User("User [B]", [], [])];
+
+    const articles = [new Article("Article [A]", users[0], "Test"), new Article("Article [B]", users[1], "Test"), new Article("Article [C]", users[0], "Test")];
+
+    const collections = [new Collection("Collection [A]", users[0], [articles[0], articles[2]]), new Collection("Collection [B]", users[1], [articles[1]])];
+
     return (
         <div className="dashboard-container">
             {/* ... */}
             <Section title="Recent Articles" isOpen={true}>
-                <div className="dashboard-section-card">
-                    Test 1
-                </div>
-                <div className="dashboard-section-card">
-                    Test 2
-                </div>
-                <div className="dashboard-section-card">
-                    Test 3
-                </div>
+                {articles}
             </Section>
             {/* ... */}
             <Section title="Recent Collections" isOpen={true}>
-                <div className="dashboard-section-card">
-                    Test 1
-                </div>
-                <div className="dashboard-section-card">
-                    Test 2
-                </div>
-                <div className="dashboard-section-card">
-                    Test 3
-                </div>
-                <div className="dashboard-section-card">
-                    Test 4
-                </div>
-                <div className="dashboard-section-card">
-                    Test 5
-                </div>
-                <div className="dashboard-section-card">
-                    Test 6
-                </div>
+                {collections}
             </Section>
         </div>
     );
