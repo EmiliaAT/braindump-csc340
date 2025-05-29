@@ -1,32 +1,42 @@
-import { useState } from 'react';
 import './Dashboard.css'
-
-function Section({ title, isOpen }: { title: string, isOpen: boolean }) {
-    const [open, setOpen] = useState(isOpen);
-
-    return (
-        <div className="dashboard-section">
-            {/* ... */}
-            <div className="dashboard-section-header" onClick={() => setOpen(!open)}>
-                <h2 className="dashboard-section-title">{title}</h2>
-                <h2 className="dashboard-section-toggle">{"[" + (open ? "o" : " ") + "]"}</h2>
-            </div>
-            {/* ... */}
-            <div className="dashboard-section-content">
-                {
-                    (open ? "Test" : "")
-                }
-            </div>
-        </div>
-    );
-}
+import Section from './Section';
 
 export default function Dashboard() {
     return (
         <div className="dashboard-container">
-            <Section title="Test [A]" isOpen={true} />
-            <Section title="Test [B]" isOpen={true} />
-            <Section title="Test [C]" isOpen={true} />
+            {/* ... */}
+            <Section title="Recent Articles" isOpen={true}>
+                <div className="dashboard-section-card">
+                    Test 1
+                </div>
+                <div className="dashboard-section-card">
+                    Test 2
+                </div>
+                <div className="dashboard-section-card">
+                    Test 3
+                </div>
+            </Section>
+            {/* ... */}
+            <Section title="Recent Collections" isOpen={true}>
+                <div className="dashboard-section-card">
+                    Test 1
+                </div>
+                <div className="dashboard-section-card">
+                    Test 2
+                </div>
+                <div className="dashboard-section-card">
+                    Test 3
+                </div>
+                <div className="dashboard-section-card">
+                    Test 4
+                </div>
+                <div className="dashboard-section-card">
+                    Test 5
+                </div>
+                <div className="dashboard-section-card">
+                    Test 6
+                </div>
+            </Section>
         </div>
     );
 }
