@@ -14,8 +14,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "articles")
 public class Article {
 
@@ -30,5 +36,10 @@ public class Article {
 
     @ManyToMany(mappedBy = "articles")
     private Set<Collection> collections;
+
+    public Article(User author, Set<Collection> collections) {
+        this.author = author;
+        this.collections = collections;
+    }
 
 }
