@@ -1,8 +1,11 @@
 # BrainDump API
+
 ## Description
-API for BrainDump
+
+API for the BrainDump Platform.
 
 ### Version
+
 0.0.1
 
 ## Installation
@@ -10,28 +13,24 @@ API for BrainDump
 ## Notes
 
 ## API Endpoints
-Base URL: [`http://localhost:8080/BrainDump`](http://localhost:8080/BrainDump)
+
+**Base URL:** [`http://localhost:8080`](http://localhost:8080)
 
 ## Article
 
-1. ### [`/Article/{articleId}`](http://localhost:8080/BrainDump/Article/{articleId}) (GET)
-Gets an individual version of an Article in the system. Each Article version is identified by a numeric `articleId`
+1. ### [`/articles/{articleId}`](http://localhost:8080/articles/{articleId}) (GET)
+
+Gets an individual Article in the system. Each Article record is identified by a numeric `articleId`.
 
 #### Response
 
- ```
+```
 
 ```
-2. ### [`/Article/Versions/{articleId}`](http://localhost:8080/BrainDump/Article/Versions/{articleId}) (GET)
-returns a list of all versions associated to the article Id provided no matter which version the id corresponds to
 
-#### Response
+3. ### [`/articles/{articleId}`](http://localhost:8080/articles/{articleID}) (DELETE)
 
- ```
-
-```
-3. ### [`/Article/Delete/{articleId}`](http://localhost:8080/BrainDump/Article/Delete/{articleID}) (DELETE)
-Delete an Article
+Deletes an existing Article from the system given an Article ID.
 
 #### Parameters
 
@@ -41,30 +40,21 @@ Delete an Article
 
 ```
 
-4. ### [`/Article/AddNew`](http://localhost:8080/BrainDump/Article/AddNew) (POST)
-Create a new Article entry. article is assigned version 1
+4. ### [`/articles`](http://localhost:8080/articles) (POST)
+
+Creates a new Article record in the system.
 
 #### Parameters
-
 
 #### Response
 
 ```
 
 ```
-5. ### [`/Article/AddVersion/{articleId}`](http://localhost:8080/BrainDump/Article/AddVersion/{articleId}) (POST)
-Create a new version for an existing article. article is assigned the next version number.
 
-#### Parameters
+6. ### [`/articles/{articleId}`](http://localhost:8080/articles/{articleId}) (PUT)
 
-
-#### Response
-
-```
-
-```
-6. ### [`/Article/Update/{articleId}`](http://localhost:8080/BrainDump/Article/Update/{articleId}) (PUT)
-Update an existing version of an Article. 
+Updates an existing Article record in the system.
 
 #### Parameters
 
@@ -73,7 +63,9 @@ Update an existing version of an Article.
 ```
 
 ```
-7. ### [`/Article/Public`](http://localhost:8080/BrainDump/Article/Public) (GET)
+
+7. ### [`/articles`](http://localhost:8080/articles) (GET)
+
 Gets a list of the latest versions of public Articles.
 
 #### Parameters
@@ -85,8 +77,9 @@ Gets a list of the latest versions of public Articles.
 
 ```
 
-8. ### [`/Article/Published/{userId}`](http://localhost:8080/BrainDump/Article/Published/{userId}) (GET)
-Gets a list published articles for a given user
+8. ### [`/articles?author={userId}`](http://localhost:8080/articles?author={userId}) (GET)
+
+Gets a list public Articles published by a given User.
 
 #### Parameters
 
@@ -95,8 +88,12 @@ Gets a list published articles for a given user
 ```
 
 ```
-9. ### [`/Article/All/{userId}`]((http://localhost:8080/BrainDump/Article/All/{userId}')(GET)
-Gets a list of published and unpublished articles by user
+
+8. ### [`/articles?author={userId}&all=true`](http://localhost:8080/articles?author={userId}) (GET)
+
+Gets a list of public and private Articles published by a given User.
+
+This endpoint should be refined for authentication later.
 
 #### Request Body
 
@@ -105,8 +102,10 @@ Gets a list of published and unpublished articles by user
 ```
 
 ```
-10. ### [`/Article/Collection/{collectionId}`]((http://localhost:8080/BrainDump/Article/Collection/{collectionId})(GET)
-Gets Articles in a specified collection
+
+10. ### [`/articles/{articleId}?collection={collectionId}`](http://localhost:8080/articles?collection={collectionId}) (GET)
+
+Gets all public Collections that a given Article is in.
 
 #### Request Body
 
