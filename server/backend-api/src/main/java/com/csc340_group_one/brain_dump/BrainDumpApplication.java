@@ -1,4 +1,4 @@
-package com.GroupOne.BrainDump;
+package com.csc340_group_one.brain_dump;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
