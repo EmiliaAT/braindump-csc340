@@ -116,3 +116,4 @@ Subscriptions can be removed by the reader at any time.
 
 ## 4. Database Schema
 ![Database Schema](https://github.com/EmiliaAT/braindump-csc340/blob/main/database/braindump_entity_relationship_diagram_v5.png)
+
