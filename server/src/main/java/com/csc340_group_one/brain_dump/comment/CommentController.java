@@ -27,9 +27,9 @@ public class CommentController {
    * @param commentId the id of the comment to pull
    * @return the comment
    */
-  @GetMapping("/Comment/{commentId}")
-  public Object getCommentById(@PathVariable long commentId) {
-    return CommentService.getCommentById(commentId);
+  @GetMapping("/Comment/{id}")
+  public Comment getCommentById(@PathVariable long id) {
+    return CommentService.getCommentById(id);
   }
 
   /**

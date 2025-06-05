@@ -27,7 +27,7 @@ public class CommentService {
    * @param CommentId The ID of the Comment to retrieve
    * @return The Comment with the specified ID
    */
-  public Comment getCommentById(long commentId) {
+  public Comment getCommentById(@PathVariable long commentId) {
     return CommentRepository.findById(commentId);
   }
 
