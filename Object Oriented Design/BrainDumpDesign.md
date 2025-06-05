@@ -111,7 +111,9 @@ see them in a unique display if desired.
 
 Subscriptions can be removed by the reader at any time.
 
+## 3. UML Class Model
+![UML Class Diagram](https://github.com/EmiliaAT/braindump-csc340/blob/main/Object%20Oriented%20Design/UML%20Class%20Diagram.png)
 
-## 3. Database Schema
+## 4. Database Schema
+![Database Schema](https://github.com/EmiliaAT/braindump-csc340/blob/main/database/braindump_entity_relationship_diagram_v5.png)
 
-![UML Class Diagram](https://github.com/EmiliaAT/braindump-csc340/blob/main/database/braindump_entity_relationship_diagram_v5.png)
