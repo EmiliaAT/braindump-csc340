@@ -4,8 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,6 +43,21 @@ public class ArticleController {
     @GetMapping("title/{title}")
     public List<Article> getArticlesByTitle(@PathVariable String title) {
         return this.service.getArticlesByTitle(title);
+    }
+
+    @PostMapping("")
+    public Optional<Article> addArticle(@RequestBody Article article) {
+        return this.service.addArticle(article);
+    }
+
+    @PutMapping("{id}")
+    public Optional<Article> updateArticle(@PathVariable Long id, @RequestBody Article article) {
+        return this.service.updateArticle(id, article);
+    }
+
+    @DeleteMapping("{id}")
+    public void deleteArticle(@PathVariable Long id) {
+        this.service.deleteArticle(id);
     }
 
 }

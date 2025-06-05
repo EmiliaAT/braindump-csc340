@@ -20,10 +20,6 @@ public class ArticleService {
         return this.repository.findById(id);
     }
 
-    public Article addArticle(Article article) {
-        return this.repository.save(article);
-    }
-
     public List<Article> getArticlesByAuthorId(Long authorId) {
         return this.repository.getArticlesByAuthorId(authorId);
     }
@@ -34,6 +30,27 @@ public class ArticleService {
 
     public List<Article> getArticlesByCollectionInclusion(Long collectionId) {
         return this.repository.getArticlesByCollectionInclusion(collectionId);
+    }
+
+    public Optional<Article> addArticle(Article article) {
+        if (this.repository.existsById(article.getId())) {
+            return Optional.empty();
+        }
+        article = this.repository.save(article);
+        return this.repository.findById(article.getId());
+    }
+
+    public void deleteArticle(Long id) {
+        this.repository.deleteById(id);
+    }
+
+    public Optional<Article> updateArticle(Long id, Article article) {
+        article.setId(id);
+        if (!this.repository.existsById(article.getId())) {
+            return Optional.empty();
+        }
+        this.repository.save(article);
+        return this.repository.findById(article.getId());
     }
 
 }
