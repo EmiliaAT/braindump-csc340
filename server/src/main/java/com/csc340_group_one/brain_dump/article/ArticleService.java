@@ -33,24 +33,24 @@ public class ArticleService {
     }
 
     public Optional<Article> addArticle(Article article) {
-        if (this.repository.existsById(article.getId())) {
+        if (article.getId() != null) {
             return Optional.empty();
         }
         article = this.repository.save(article);
-        return this.repository.findById(article.getId());
-    }
-
-    public void deleteArticle(Long id) {
-        this.repository.deleteById(id);
+        return this.getArticleById(article.getId());
     }
 
     public Optional<Article> updateArticle(Long id, Article article) {
         article.setId(id);
-        if (!this.repository.existsById(article.getId())) {
+        if (!this.repository.existsById(id)) {
             return Optional.empty();
         }
         this.repository.save(article);
-        return this.repository.findById(article.getId());
+        return this.getArticleById(id);
+    }
+
+    public void deleteArticle(Long id) {
+        this.repository.deleteById(id);
     }
 
 }
