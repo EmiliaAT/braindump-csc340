@@ -72,7 +72,9 @@ A reader will be able to subscribe to an author. They subsequently will be able 
 ##### 2.2.2.7 Remove Subscriptions
 Subscriptions can be deleted by the reader at any time.
 
+## 3. UML Class Model
+![UML Class Diagram](https://github.com/EmiliaAT/braindump-csc340/blob/main/Object%20Oriented%20Design/UML%20Class%20Diagram.png)
 
-## 3. Database Schema
-![UML Class Diagram](https://github.com/EmiliaAT/braindump-csc340/blob/main/database/braindump_entity_relationship_diagram_v5.png)
+## 4. Database Schema
+![Database Schema](https://github.com/EmiliaAT/braindump-csc340/blob/main/database/braindump_entity_relationship_diagram_v5.png)
 
