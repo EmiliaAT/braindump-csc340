@@ -135,7 +135,7 @@ Get articles based on Tag attribute
 
 ## Comment
 
-13. ### [`/Comment/Add/{articleId}`](http://localhost:8080/BrainDump/Comment/Add/{articleId}) (POST)
+13. ### [`/comment/{articleId}`](http://localhost:8080/comment/{articleId}) (POST)
 Adds a Comment to an article
 
 #### Response
@@ -143,15 +143,7 @@ Adds a Comment to an article
  ```
 
 ```
-14. ### [`/Comment/Reply/{commentId}`](http://localhost:8080/BrainDump/Comment/Reply/{commentId}) (POST)
-Adds a Comment in reply to an existing Comment
-
-#### Response
-
- ```
-
-```
-15. ### [`/Comment/Delete/{commentId}`](http://localhost:8080/BrainDump/Comment/Delete/{commentId}) (DELETE)
+14. ### [`/comment/{commentId}`](http://localhost:8080/comment/{commentId}) (DELETE)
 Replaces the text of a comment to indicate deletion
 
 #### Response
@@ -159,8 +151,16 @@ Replaces the text of a comment to indicate deletion
  ```
 
 ```
-16. ### [`/Comment/Update/{commentId}`](http://localhost:8080/BrainDump/Comment/Update/{commentId}) (PUT)
+15. ### [`/comment/{commentId}`](http://localhost:8080/comment/{commentId}) (PUT)
 Apply edits to a comment
+
+#### Response
+
+ ```
+
+```
+16. ### [`/comment/{commentId}`](http://localhost:8080/comment/{commentId}) (GET)
+retreive an individual comment entry
 
 #### Response
 
@@ -205,7 +205,7 @@ Gets User Profile by Username
 
 ## Subscription
 
-21. ### [`/Subscription/Add?user={userID}&author={authorId}`](http://localhost:8080/BrainDump/Subscription/Add?user={userID}&author={authorId}) (POST)
+21. ### [`/subscription?user={userID}&author={authorId}`](http://localhost:8080/subscription?user={userID}&author={authorId}) (POST)
 Create subscription by User to an Author
 
 #### Response
@@ -213,7 +213,7 @@ Create subscription by User to an Author
  ```
 
 ```
-22. ### [`/Subscription/{userId}`](http://localhost:8080/BrainDump/Subscription/{userId}) (GET)
+22. ### [`/subscription/{userId}`](http://localhost:8080/subscription/{userId}) (GET)
 Gets User's list of subscribed Authors
 
 #### Response
@@ -221,7 +221,7 @@ Gets User's list of subscribed Authors
  ```
 
 ```
-23. ### [`/Subscription/Articles/{userId}`](http://localhost:8080/BrainDump/Subscription/Articles/{userId}) (GET)
+23. ### [`/subscription/articles/{userId}`](http://localhost:8080/subscription/articles/{userId}) (GET)
 Gets articles from subscribed Authors
 
 #### Response
@@ -229,7 +229,7 @@ Gets articles from subscribed Authors
  ```
 
 ```
-24. ### [`/Subscription/Delete?user={userID}&author={authorId}`](http://localhost:8080/BrainDump/Subscription/Delete?user={userID}&author={authorId}) (POST)
+24. ### [`/subscription?user={userID}&author={authorId}`](http://localhost:8080/subscription?user={userID}&author={authorId}) (DELETE)
 Delete subscription by User to an Author
 
 #### Response
