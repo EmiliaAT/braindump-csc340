@@ -6,6 +6,9 @@ import java.util.Set;
 
 import com.csc340_group_one.brain_dump.article.Article;
 import com.csc340_group_one.brain_dump.collection.Collection;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,6 +39,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
+    @JsonProperty("user_id")
     private Long id;
 
     @NonNull
@@ -52,24 +56,30 @@ public class User {
 
     @NonNull
     @Column(name = "created_by", nullable = false)
+    @JsonProperty("created_by")
     private Instant createdBy;
 
     @NonNull
     @Column(name = "modified_by", nullable = false)
+    @JsonProperty("modified_by")
     private Instant modifiedBy;
 
     @NonNull
     @OneToMany(mappedBy = "author")
+    @JsonIgnore
     private Set<Article> articles;
 
     @NonNull
     @OneToMany(mappedBy = "author")
+    @JsonIgnore
     private Set<Collection> collections;
 
     @Getter(value = AccessLevel.NONE)
     @Setter(value = AccessLevel.NONE)
     @OneToOne(optional = true)
     @JoinColumn(name = "homepage_id", nullable = true)
+    @JsonProperty("homepage_id")
+    @JsonIgnoreProperties("author_id")
     private Article homepage;
 
     public Optional<Article> getHomepage() {
