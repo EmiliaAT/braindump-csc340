@@ -1,4 +1,4 @@
-package com.safeplace.braindump.comment;
+package com.csc340_group_one.brain_dump.comment;
 
 import java.util.Optional;
 
