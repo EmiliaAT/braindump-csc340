@@ -1,6 +1,8 @@
 package com.csc340_group_one.brain_dump.comment;
 
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +26,11 @@ public class CommentController {
   /**
    * Endpoint to pull back an individual comment
    *
-   * @param commentId the id of the comment to pull
+   * @param commentid the id of the comment to pull
    * @return the comment
    */
-  @GetMapping("/Comment/{id}")
-  public Comment getCommentById(@PathVariable long id) {
+  @GetMapping("/comment/{id}")
+  public Optional<Comment> getCommentById(@PathVariable long id) {
     return CommentService.getCommentById(id);
   }
 
@@ -46,25 +48,25 @@ public class CommentController {
   /**
    * Endpoint to mark a comment as deleted
    *
-   * @param commentId The ID of the comment to erase
+   * @param commentid The ID of the comment to erase
    * @return the comment with prior text removed
    */
-  @DeleteMapping("/comment/{commentId}")
-  public Object deleteComment(@PathVariable int commentId, @RequestBody Comment Comment) {
+  @DeleteMapping("/comment/{commentid}")
+  public Object deleteComment(@PathVariable long commentid, @RequestBody Comment Comment) {
     CommentService.deleteComment(Comment);
-    return CommentService.getCommentById(commentId);
+    return CommentService.getCommentById(commentid);
   }
 
   /**
    * Endpoint to update the text of a comment
    *
-   * @param commentId The ID of the comment to update
+   * @param commentid The ID of the comment to update
    * @return the comment with updated text
    */
-  @PutMapping("/comment/{commentId}")
-  public Object updateComment(@PathVariable int commentId, @RequestBody Comment Comment) {
-    CommentService.updateComment(Comment);
-    return CommentService.getCommentById(commentId);
+  @PutMapping("/comment/{commentid}")
+  public Optional<Comment> updateComment(@PathVariable long commentid, @RequestBody Comment Comment) {
+    CommentService.updateComment(commentid,Comment);
+    return CommentService.getCommentById(commentid);
   }
 
 }
