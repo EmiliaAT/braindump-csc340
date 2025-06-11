@@ -4,6 +4,7 @@ package com.csc340_group_one.brain_dump.comment;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * It provides endpoints for CRUD operations on Comment data.
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 public class CommentController {
 
   @Autowired
