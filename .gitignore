@@ -1,2 +1,5 @@
 # VS Code Configurations
 .vscode/
+
+# Environment Variables
+.env
