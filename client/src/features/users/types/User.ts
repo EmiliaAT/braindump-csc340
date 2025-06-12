@@ -13,7 +13,7 @@ export interface RawUser {
   email: string;
   username: string;
   password: string;
-  homepage_id: Omit<RawArticle, "author_id">;
+  homepage: Omit<RawArticle, "author_id">;
 }
 
 export type Users = readonly User[];
@@ -26,6 +26,6 @@ export function parseUser(src: RawUser): User {
     email: src.email,
     username: src.username,
     password: src.password,
-    homepage: src.homepage_id.article_id,
+    homepage: src.homepage.article_id,
   };
 }

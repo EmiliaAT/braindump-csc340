@@ -13,7 +13,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query(value = "SELECT a.* FROM articles a JOIN collection_articles ca ON a.article_id = ca.article_id WHERE ca.collection_id = ?1", nativeQuery = true)
     public List<Article> getArticlesByCollectionInclusion(Long collectionId);
 
-    @Query(value = "SELECT a.* FROM articles a WHERE a.title = ?1", nativeQuery = true)
+    @Query(value = "SELECT a.* FROM articles a WHERE a.title LIKE ?1", nativeQuery = true)
     public List<Article> getArticlesByTitle(String title);
 
 }

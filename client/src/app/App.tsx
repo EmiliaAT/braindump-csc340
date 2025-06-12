@@ -1,16 +1,21 @@
 import "./App.css";
-import { match } from "ts-pattern";
-import useArticles from "../features/articles/hooks/useArticles";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Dashboard from "./pages/dashboard/Dashboard";
+
+const client = new QueryClient();
 
 export default function App() {
-  const articles = useArticles();
-
   return (
-    <p>
-      {match(articles)
-        .with({ isLoading: true }, () => "Loading...")
-        .with({ isError: true }, () => "Error!")
-        .otherwise((article) => JSON.stringify(article.data))}
-    </p>
+    <QueryClientProvider client={client}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/">
+            <Route index element={<Navigate to="/dashboard" replace />} />
+            <Route path="dashboard" element={<Dashboard />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }

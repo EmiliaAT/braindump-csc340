@@ -78,7 +78,7 @@ public class User {
     @Setter(value = AccessLevel.NONE)
     @OneToOne(optional = true)
     @JoinColumn(name = "homepage_id", nullable = true)
-    @JsonProperty("homepage_id")
+    @JsonProperty("homepage")
     @JsonIgnoreProperties("author_id")
     private Article homepage;
 
