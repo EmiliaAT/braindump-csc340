@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
 import "./App.css";
-import getUsers from "../features/users/api/getUsers";
+import { match } from "ts-pattern";
+import useArticles from "../features/articles/hooks/useArticles";
 
 export default function App() {
-  const [state, setState] = useState<string | undefined>(undefined);
+  const articles = useArticles();
 
-  useEffect(() => {
-    void getUsers({ kind: "all" }).then((users) => {
-      setState(JSON.stringify(users));
-    });
-  }, []);
-
-  return state === undefined ? <p>Loading...</p> : <p>{state}</p>;
+  return (
+    <p>
+      {match(articles)
+        .with({ isLoading: true }, () => "Loading...")
+        .with({ isError: true }, () => "Error!")
+        .otherwise((article) => JSON.stringify(article.data))}
+    </p>
+  );
 }

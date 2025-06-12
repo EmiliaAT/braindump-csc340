@@ -1,38 +1,32 @@
-import type { User, Users } from "../types/User";
-import type { QueryAll, QueryOne, UserQuery } from "../types/UserQuery";
+import {
+  parseUser,
+  type RawUser,
+  type RawUsers,
+  type User,
+  type Users,
+} from "../types/User";
 import axios from "axios";
 
-export default async function getUsers(_: QueryOne): Promise<User | null>;
-export default async function getUsers(_: QueryAll): Promise<Users>;
-export default async function getUsers(
-  query: UserQuery
-): Promise<Users | (User | null)> {
-  switch (query.kind) {
-    case "id":
-      return getUserById(query.id);
-    case "name":
-      return getUserByName(query.name);
-    case "email":
-      return getUserByEmail(query.email);
-    case "all":
-      return getAllUsers();
-  }
-}
-
-const getUserById = async (id: number) =>
+export const getUserById = async (id: number): Promise<User | null> =>
   axios
-    .get<User | null>(`/api/users/${String(id)}`)
-    .then((response) => response.data);
+    .get<RawUser | null>(`/api/users/${String(id)}`)
+    .then((response) => response.data)
+    .then((response) => (response ? parseUser(response) : null));
 
-const getUserByName = async (name: string) =>
+export const getUserByName = async (name: string): Promise<User | null> =>
   axios
-    .get<User | null>(`/api/users/${name}`)
-    .then((response) => response.data);
+    .get<RawUser | null>(`/api/users/${name}`)
+    .then((response) => response.data)
+    .then((response) => (response ? parseUser(response) : null));
 
-const getUserByEmail = async (email: string) =>
+export const getUserByEmail = async (email: string): Promise<User | null> =>
   axios
-    .get<User | null>(`/api/users/${email}`)
-    .then((response) => response.data);
+    .get<RawUser | null>(`/api/users/${email}`)
+    .then((response) => response.data)
+    .then((response) => (response ? parseUser(response) : null));
 
-const getAllUsers = async () =>
-  axios.get<Users>("/api/users").then((response) => response.data);
+export const getAllUsers = async (): Promise<Users> =>
+  axios
+    .get<RawUsers>("/api/users")
+    .then((response) => response.data)
+    .then((response) => response.map(parseUser));
