@@ -2,8 +2,9 @@ package com.csc340_group_one.brain_dump.user;
 
 import com.csc340_group_one.brain_dump.article.Article;
 import com.csc340_group_one.brain_dump.collection.Collection;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +16,6 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,22 +49,30 @@ public class User {
 
     @NonNull
     @OneToMany(mappedBy = "author")
-    @JsonIgnore
-    private Set<Article> articles;
+    // Substitute Articles for Article IDs.
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<Article> articles;
 
     @NonNull
     @OneToMany(mappedBy = "author")
-    @JsonIgnore
-    private Set<Collection> collections;
+    // Substitute Collections for Collection IDs.
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<Collection> collections;
 
     @NonNull
     @ManyToMany(mappedBy = "subscriptions")
-    @JsonIgnoreProperties({ "subscribers", "subscriptions" })
+    // Substitute Users for User IDs.
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private List<User> subscribers;
 
     @NonNull
     @ManyToMany
     @JoinTable(name = "subscriptions", joinColumns = @JoinColumn(name = "subscriber", nullable = false), inverseJoinColumns = @JoinColumn(name = "subscribee", nullable = false))
-    @JsonIgnoreProperties({ "subscribers", "subscriptions" })
+    // Substitute Users for User IDs.
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
     private List<User> subscriptions;
 }
