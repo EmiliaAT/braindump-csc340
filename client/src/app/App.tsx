@@ -1,7 +1,7 @@
-import "./App.css";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Dashboard from "./pages/dashboard/Dashboard";
+import Discover from "./routes/discover/Discover";
+import Dashboard from "./routes/dashboard/Dashboard";
 
 const client = new QueryClient();
 
@@ -11,8 +11,9 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
+            <Route index element={<Navigate to="/discover" replace />} />
+            <Route path="/discover" element={<Discover />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,19 +1,17 @@
-package com.safeplace.braindump.comment;
+package com.csc340_group_one.brain_dump.comment;
 
-//import java.time.String;
+// import java.time.String;
 
 /* import java.time.String; */
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-/* 
+/*
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,27 +27,33 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id", nullable = false)
     @JsonProperty("commentId")
-    private Long    commentid;
+    private Long commentid;
+
     @Column(name = "comment_body", nullable = true)
     @JsonProperty("commentBody")
-    private String  commentbody;
+    private String commentbody;
+
     @Column(name = "created_timestamp", nullable = true)
     @JsonProperty("createdTimestamp")
     private String createdtimestamp;
+
     @Column(name = "article_id", nullable = true)
     @JsonProperty("articleId")
-    private Long    articleid;
+    private Long articleid;
+
     @Column(name = "comment_user_id", nullable = true)
     @JsonProperty("commentUserId")
-    private Long    commentuserid;
+    private Long commentuserid;
+
     @Column(name = "comment_user_name", nullable = true)
     @JsonProperty("commentUserName")
-    private String  commentusername;
+    private String commentusername;
 
     public Comment() {
     }
 
-    public Comment(Long commentid, String commentbody, String createdtimestamp, Long articleid, String commentusername, Long commentuserid ) {
+    public Comment(Long commentid, String commentbody, String createdtimestamp,
+            Long articleid, String commentusername, Long commentuserid) {
         this.commentid = commentid;
         this.commentbody = commentbody;
         this.createdtimestamp = createdtimestamp;
@@ -58,7 +62,8 @@ public class Comment {
         this.commentuserid = commentuserid;
     }
 
-    public Comment( String commentbody, String createdtimestamp, Long articleid, String commentusername, Long commentuserid ) {
+    public Comment(String commentbody, String createdtimestamp, Long articleid,
+            String commentusername, Long commentuserid) {
         this.commentbody = commentbody;
         this.createdtimestamp = createdtimestamp;
         this.articleid = articleid;
@@ -113,6 +118,4 @@ public class Comment {
     public void setcommentuserid(Long commentuserid) {
         this.commentuserid = commentuserid;
     }
-
 }
-

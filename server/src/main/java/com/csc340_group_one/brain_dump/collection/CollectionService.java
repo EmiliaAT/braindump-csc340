@@ -2,7 +2,6 @@ package com.csc340_group_one.brain_dump.collection;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +51,4 @@ public class CollectionService {
         this.repository.save(collection);
         return this.repository.findById(collection.getId());
     }
-
 }

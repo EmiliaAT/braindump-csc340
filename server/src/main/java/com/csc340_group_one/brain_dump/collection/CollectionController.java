@@ -2,7 +2,6 @@ package com.csc340_group_one.brain_dump.collection;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,7 +36,7 @@ public class CollectionController {
         return this.service.getCollectionsByAuthorId(authorId);
     }
 
-    @GetMapping("collection/{articleId}")
+    @GetMapping("articles/{articleId}")
     public List<Collection> getCollectionsByArticleInclusion(@PathVariable Long articleId) {
         return this.service.getCollectionsByArticleInclusion(articleId);
     }
@@ -61,5 +60,4 @@ public class CollectionController {
     public void deleteCollection(@PathVariable Long id) {
         this.service.deleteCollection(id);
     }
-
 }

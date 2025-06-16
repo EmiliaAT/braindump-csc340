@@ -1,8 +1,6 @@
-package com.safeplace.braindump.comment;
-
+package com.csc340_group_one.brain_dump.comment;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * CommentController is a REST controller that handles HTTP requests related to
- * Comments.
- * It provides endpoints for CRUD operations on Comment data.
+ * Comments. It provides endpoints for CRUD operations on Comment data.
  */
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 public class CommentController {
 
   @Autowired
-  private CommentService CommentService;
+  private CommentService service;
 
   /**
    * Endpoint to pull back an individual comment
@@ -30,10 +28,9 @@ public class CommentController {
    * @param commentid the id of the comment to pull
    * @return the comment
    */
-  @CrossOrigin(origins = "http://localhost:5173")
   @GetMapping("/comments/{articleid}")
   public List<Comment> getCommentsByArticleId(@PathVariable long articleid) {
-    return CommentService.getCommentsByArticleId(articleid);
+    return service.getCommentsByArticleId(articleid);
   }
 
   /**
@@ -42,36 +39,33 @@ public class CommentController {
    * @param Comment the comment to add
    * @return the comment
    */
-  @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/comment")
   public Object addComment(@RequestBody Comment Comment) {
-    return CommentService.addComment(Comment);
+    return service.addComment(Comment);
   }
 
   /**
    * Endpoint to mark a comment as deleted
    *
-   * @param commentid The ID of the comment to erase
+   * @param id The ID of the comment to erase
    * @return the comment with prior text removed
    */
-  @CrossOrigin(origins = "http://localhost:5173")
   @DeleteMapping("/comment/{commentid}")
-  public void deleteComment(@PathVariable long commentid) {
-    CommentService.deleteComment(commentid);
+  public void deleteComment(@PathVariable Long id) {
+    service.deleteComment(id);
     return;
   }
 
   /**
    * Endpoint to update the text of a comment
    *
-   * @param commentid The ID of the comment to update
+   * @param id The ID of the comment to update
    * @return the comment with updated text
    */
-  @CrossOrigin(origins = "http://localhost:5173")
   @PutMapping("/comment/{commentid}")
-  public void updateComment(@PathVariable long commentid, @RequestBody Comment Comment) {
-    CommentService.updateComment(commentid,Comment);
+  public void updateComment(@PathVariable Long id,
+      @RequestBody Comment comment) {
+    service.updateComment(id, comment);
     return;
   }
-
 }

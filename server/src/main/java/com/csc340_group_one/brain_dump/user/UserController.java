@@ -2,7 +2,6 @@ package com.csc340_group_one.brain_dump.user;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,12 +41,12 @@ public class UserController {
         return this.service.getUserByUsername(username);
     }
 
-    @GetMapping("/article/{articleId}")
+    @GetMapping("/articles/{articleId}")
     public Optional<User> getUserByArticleCreation(@PathVariable Long articleId) {
         return this.service.getUserByArticleCreation(articleId);
     }
 
-    @GetMapping("/collection/{collectionId}")
+    @GetMapping("/collections/{collectionId}")
     public Optional<User> getUserByCollectionCreation(@PathVariable Long collectionId) {
         return this.service.getUserByCollectionCreation(collectionId);
     }
@@ -58,7 +57,8 @@ public class UserController {
     }
 
     @PutMapping("{id}")
-    public Optional<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+    public Optional<User> updateUser(@PathVariable Long id,
+            @RequestBody User user) {
         return this.service.updateUser(id, user);
     }
 
@@ -66,5 +66,4 @@ public class UserController {
     public void deleteUser(@PathVariable Long id) {
         this.service.deleteUser(id);
     }
-
 }
