@@ -1,4 +1,4 @@
-package com.csc340_group_one.brain_dump.subscription;
+package com.safeplace.braindump.subscription;
 
 
 import java.util.List;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.csc340_group_one.brain_dump.article.Article;
-import com.csc340_group_one.brain_dump.user.User;
+import com.safeplace.braindump.Article;
+import com.safeplace.braindump.User;
 
 /**
  * SubscriptionController is a REST controller that handles HTTP requests related to
@@ -21,7 +21,6 @@ import com.csc340_group_one.brain_dump.user.User;
  * It provides endpoints for CRUD operations on Subscription data.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 public class SubscriptionController {
 
   @Autowired
@@ -33,6 +32,7 @@ public class SubscriptionController {
    * @param subscriptionid the id of the subscription to pull
    * @return the subscription
    */
+  @CrossOrigin(origins = "http://localhost:5173")
   @GetMapping("/subscription/{id}")
   public Subscription getSubscriptionById(@PathVariable long id) {
     return SubscriptionService.getSubscriptionById(id);
@@ -44,6 +44,7 @@ public class SubscriptionController {
    * @param Subscription the subscription to add
    * @return the subscription
    */
+  @CrossOrigin(origins = "http://localhost:5173")
   @PostMapping("/subscription")
   public Subscription addSubscription(@RequestBody Subscription Subscription) {
     return SubscriptionService.addSubscription(Subscription);
@@ -56,10 +57,10 @@ public class SubscriptionController {
    * @param authoruserid the id of the author
    * @return the subscription list that remains after delete
    */
-  @DeleteMapping("/subscription/{subscriptionid}")
-  public List<User> deleteBySubscriptionId(@PathVariable long subscriptionid) {
-    long subscriberuserid = SubscriptionService.deleteSubscription(subscriptionid);
-    return SubscriptionService.getSubscribedAuthors(subscriberuserid);
+  @CrossOrigin(origins = "http://localhost:5173")
+  @DeleteMapping("/subscription/delete/{subscriptionid}")
+  public List<Subscription> deleteSubscription(@PathVariable long subscriptionid) {
+    return SubscriptionService.deleteSubscription(subscriptionid);
   }
 
   /**
@@ -68,6 +69,7 @@ public class SubscriptionController {
    * @param subscriberuserid the id of the subscriber to pull the list from
    * @return the subscription list
    */
+  @CrossOrigin(origins = "http://localhost:5173")
   @GetMapping("/subscription/authors/{subscriberuserid}")
   public List<User> getSubscribedAuthors(@PathVariable long subscriberuserid) {
     return SubscriptionService.getSubscribedAuthors(subscriberuserid);
@@ -79,8 +81,20 @@ public class SubscriptionController {
    * @param subscriptionid the id of the subscription to pull
    * @return the subscription
    */
+  @CrossOrigin(origins = "http://localhost:5173")
   @GetMapping("/subscription/articles/{subscriberuserid}")
   public List<Article> getSubscriptionArticles(@PathVariable long subscriberuserid) {
     return SubscriptionService.getSubscriptionArticles(subscriberuserid);
+  }
+    /**
+   * Endpoint to pull back an individual subscription
+   *
+   * @param subscriptionid the id of the subscription to pull
+   * @return the subscription
+   */
+  @CrossOrigin(origins = "http://localhost:5173")
+  @GetMapping("/subscriptions/{subscriberuserid}")
+  public List<Subscription> getSubscriptions(@PathVariable long subscriberuserid) {
+    return SubscriptionService.getSubscriptions(subscriberuserid);
   }
 }
