@@ -1,69 +1,59 @@
-import useUsers from "../../../features/users/hooks/useUsers";
+import { useState } from "react";
 import useArticles from "../../../features/articles/hooks/useArticles";
 import useCollections from "../../../features/collections/hooks/useCollections";
-import type { UseQueryResult } from "@tanstack/react-query";
-import { match } from "ts-pattern";
+import { useNavigate } from "react-router";
 
 export default function Discover() {
-  const [users, userDispatch] = useUsers();
-  const [articles, articleDispatch] = useArticles();
-  const [collections, collectionDispatch] = useCollections();
+  const [articles] = useArticles();
+  const [collections] = useCollections();
 
-  const displayItems = (
-    items: UseQueryResult<readonly { id: number }[], unknown>,
-  ) =>
-    match(items)
-      .with({ isError: true }, () => <p>Error!</p>)
-      .with({ isLoading: true }, () => <p>Loading...</p>)
-      .with({ isSuccess: true }, ({ data: items }) => (
-        <div className="flex flex-col gap-4">
-          {items.map((item) => (
-            <p key={item.id}>{JSON.stringify(item, null, 2)}</p>
-          ))}
-        </div>
-      ))
-      .otherwise(() => <></>);
+  const [panel, setPanel] = useState<"article" | "collection">("article");
 
-  const handleUserRefresh = () => {
-    userDispatch({ kind: "refresh" });
-  };
-  const handleArticleRefresh = () => {
-    articleDispatch({ kind: "refresh" });
-  };
-  const handleCollectionRefresh = () => {
-    collectionDispatch({ kind: "refresh" });
+  const navigate = useNavigate();
+
+  if ((panel == "article" && articles.isLoading) || collections.isLoading) {
+    return <p>Loading...</p>;
+  }
+  if (!articles.data || !collections.data) {
+    return <p>An Error Occurred!</p>;
+  }
+
+  const handleTogglePanel = () => {
+    setPanel(panel == "article" ? "collection" : "article");
   };
 
   return (
-    <div className="grid grid-cols-3 gap-8 p-8">
-      {/* Refresh Users */}
+    <div className="dark:bg-gray-900 min-h-screen min-w-screen p-8">
       <button
         type="button"
-        className="cursor-pointer text-center text-xl font-bold"
-        onClick={handleUserRefresh}
+        className="text-white text-xl font-bold cursor-pointer"
+        onClick={handleTogglePanel}
       >
-        Users
+        {panel == "article" ? "Articles" : "Collections"}
       </button>
-      {/* Refresh Articles */}
-      <button
-        type="button"
-        className="cursor-pointer text-center text-xl font-bold"
-        onClick={handleArticleRefresh}
-      >
-        Articles
-      </button>
-      {/* Refresh Collections */}
-      <button
-        type="button"
-        className="cursor-pointer text-center text-xl font-bold"
-        onClick={handleCollectionRefresh}
-      >
-        Collections
-      </button>
-      {/* Iterate Items */}
-      {displayItems(users)}
-      {displayItems(articles)}
-      {displayItems(collections)}
+      <div>
+        {panel == "article"
+          ? articles.data.map((article) => (
+              <p
+                key={`a-${String(article.id)}`}
+                className="text-white text-xl cursor-pointer"
+                onClick={() => void navigate(`/articles/${String(article.id)}`)}
+              >
+                {JSON.stringify(article, null, 2)}
+              </p>
+            ))
+          : collections.data.map((collection) => (
+              <p
+                key={`c-${String(collection.id)}`}
+                className="text-white text-xl cursor-pointer"
+                onClick={() =>
+                  void navigate(`/collections/${String(collection.id)}`)
+                }
+              >
+                {JSON.stringify(collection, null, 2)}
+              </p>
+            ))}
+      </div>
     </div>
   );
 }
