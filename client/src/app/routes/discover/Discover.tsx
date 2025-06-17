@@ -1,44 +1,66 @@
-import { useEffect, useState } from "react";
-import type User from "../../../features/users/types/User";
-import type Collection from "../../../features/collections/types/Collection";
-import type Article from "../../../features/articles/types/Article";
-import { getUsers } from "../../../features/users/api/getUsers";
-import { getArticles } from "../../../features/articles/api/getArticles";
-import { getCollections } from "../../../features/collections/api/getCollections";
+import useUsers from "../../../features/users/hooks/useUsers";
+import useArticles from "../../../features/articles/hooks/useArticles";
+import useCollections from "../../../features/collections/hooks/useCollections";
+import type { UseQueryResult } from "@tanstack/react-query";
+import { match } from "ts-pattern";
 
 export default function Discover() {
-  const [users, setUsers] = useState<readonly User[]>();
-  const [articles, setArticles] = useState<readonly Article[]>();
-  const [collections, setCollections] = useState<readonly Collection[]>();
+  const [users, userDispatch] = useUsers();
+  const [articles, articleDispatch] = useArticles();
+  const [collections, collectionDispatch] = useCollections();
 
-  useEffect(() => {
-    void getUsers()
-      .then((users) => users.data)
-      .then(setUsers);
-    void getArticles()
-      .then((articles) => articles.data)
-      .then(setArticles);
-    void getCollections()
-      .then((collections) => collections.data)
-      .then(setCollections);
-  }, []);
+  const displayItems = (
+    items: UseQueryResult<readonly { id: number }[], unknown>,
+  ) =>
+    match(items)
+      .with({ isError: true }, () => <p>Error!</p>)
+      .with({ isLoading: true }, () => <p>Loading...</p>)
+      .with({ isSuccess: true }, ({ data: items }) => (
+        <div className="flex flex-col gap-4">
+          {items.map((item) => (
+            <p key={item.id}>{JSON.stringify(item, null, 2)}</p>
+          ))}
+        </div>
+      ))
+      .otherwise(() => <></>);
 
-  const displayItems = (items?: readonly { id: number }[]) =>
-    !items ? (
-      <p>Loading...</p>
-    ) : (
-      <div className="flex flex-col gap-4">
-        {items.map((item) => (
-          <p key={item.id}>{JSON.stringify(item, null, 2)}</p>
-        ))}
-      </div>
-    );
+  const handleUserRefresh = () => {
+    userDispatch({ kind: "refresh" });
+  };
+  const handleArticleRefresh = () => {
+    articleDispatch({ kind: "refresh" });
+  };
+  const handleCollectionRefresh = () => {
+    collectionDispatch({ kind: "refresh" });
+  };
 
   return (
     <div className="grid grid-cols-3 gap-8 p-8">
-      <h3 className="text-center text-xl font-bold">Users</h3>
-      <h3 className="text-center text-xl font-bold">Articles</h3>
-      <h3 className="text-center text-xl font-bold">Collections</h3>
+      {/* Refresh Users */}
+      <button
+        type="button"
+        className="cursor-pointer text-center text-xl font-bold"
+        onClick={handleUserRefresh}
+      >
+        Users
+      </button>
+      {/* Refresh Articles */}
+      <button
+        type="button"
+        className="cursor-pointer text-center text-xl font-bold"
+        onClick={handleArticleRefresh}
+      >
+        Articles
+      </button>
+      {/* Refresh Collections */}
+      <button
+        type="button"
+        className="cursor-pointer text-center text-xl font-bold"
+        onClick={handleCollectionRefresh}
+      >
+        Collections
+      </button>
+      {/* Iterate Items */}
       {displayItems(users)}
       {displayItems(articles)}
       {displayItems(collections)}
