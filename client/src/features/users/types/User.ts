@@ -1,31 +1,13 @@
-import type { RawArticle } from "../../articles/types/Article";
+import type Article from "../../articles/types/Article";
+import type Collection from "../../collections/types/Collection";
 
-export interface User {
+export default interface User {
   id: number;
   email: string;
   username: string;
   password: string;
-  homepage?: number;
-}
-
-export interface RawUser {
-  user_id: number;
-  email: string;
-  username: string;
-  password: string;
-  homepage: Omit<RawArticle, "author_id">;
-}
-
-export type Users = readonly User[];
-
-export type RawUsers = readonly RawUser[];
-
-export function parseUser(src: RawUser): User {
-  return {
-    id: src.user_id,
-    email: src.email,
-    username: src.username,
-    password: src.password,
-    homepage: src.homepage.article_id,
-  };
+  articles: readonly Article["id"][];
+  collections: readonly Collection["id"][];
+  subscribers: readonly User["id"][];
+  subscriptions: readonly User["id"][];
 }

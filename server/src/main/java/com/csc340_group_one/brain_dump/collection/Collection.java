@@ -46,7 +46,7 @@ public class Collection {
     @NonNull
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
-    // Substitute User for User IDs.
+    // Substitute User for User ID.
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     private User author;

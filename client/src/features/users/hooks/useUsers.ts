@@ -1,29 +1,20 @@
-import { match, P } from "ts-pattern";
-import {
-  getAllUsers,
-  getUserByEmail,
-  getUserById,
-  getUserByName,
-} from "../api/getUsers";
-import { useQuery, type UseQueryResult } from "@tanstack/react-query";
-import type { User, Users } from "../types/User";
-import type { QueryOne, UserQuery } from "../types/UserQuery";
+import { useQuery } from "@tanstack/react-query";
+import { getUsers } from "../api/getUsers";
+import type { UserAction } from "../types/UserAction";
+import { match } from "ts-pattern";
 
-export default function useUsers(_: QueryOne): UseQueryResult<User | null>;
-export default function useUsers(): UseQueryResult<Users>;
-export default function useUsers(
-  query: UserQuery = undefined
-): UseQueryResult<Users | (User | null)> {
-  // ...
-  const users = useQuery<Users | (User | null)>({
-    queryKey: query === undefined ? ["query"] : ["query", query],
-    queryFn: () =>
-      match(query)
-        .with({ id: P.select() }, getUserById)
-        .with({ name: P.select() }, getUserByName)
-        .with({ email: P.select() }, getUserByEmail)
-        .otherwise(getAllUsers),
+export default function useUsers() {
+  const users = useQuery({
+    queryKey: ["users"],
+    queryFn: () => getUsers().then((users) => users.data),
+    staleTime: Infinity,
   });
 
-  return users;
+  const dispatch = (action: UserAction) => {
+    match(action)
+      .with({ kind: "refresh" }, () => void users.refetch())
+      .exhaustive();
+  };
+
+  return [users, dispatch] as const;
 }
