@@ -1,8 +1,9 @@
 package com.csc340_group_one.brain_dump.comment;
 
-import java.util.List;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * CommentController is a REST controller that handles HTTP requests related to
- * Comments. It provides endpoints for CRUD operations on Comment data.
+ * Comments.
+ * It provides endpoints for CRUD operations on Comment data.
  */
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 public class CommentController {
 
   @Autowired
-  private CommentService service;
+  private CommentService CommentService;
 
   /**
    * Endpoint to pull back an individual comment
@@ -28,9 +29,9 @@ public class CommentController {
    * @param commentid the id of the comment to pull
    * @return the comment
    */
-  @GetMapping("/comments/{articleid}")
-  public List<Comment> getCommentsByArticleId(@PathVariable long articleid) {
-    return service.getCommentsByArticleId(articleid);
+  @GetMapping("/comment/{id}")
+  public Optional<Comment> getCommentById(@PathVariable long id) {
+    return CommentService.getCommentById(id);
   }
 
   /**
@@ -41,31 +42,31 @@ public class CommentController {
    */
   @PostMapping("/comment")
   public Object addComment(@RequestBody Comment Comment) {
-    return service.addComment(Comment);
+    return CommentService.addComment(Comment);
   }
 
   /**
    * Endpoint to mark a comment as deleted
    *
-   * @param id The ID of the comment to erase
+   * @param commentid The ID of the comment to erase
    * @return the comment with prior text removed
    */
   @DeleteMapping("/comment/{commentid}")
-  public void deleteComment(@PathVariable Long id) {
-    service.deleteComment(id);
-    return;
+  public Object deleteComment(@PathVariable long commentid, @RequestBody Comment Comment) {
+    CommentService.deleteComment(Comment);
+    return CommentService.getCommentById(commentid);
   }
 
   /**
    * Endpoint to update the text of a comment
    *
-   * @param id The ID of the comment to update
+   * @param commentid The ID of the comment to update
    * @return the comment with updated text
    */
   @PutMapping("/comment/{commentid}")
-  public void updateComment(@PathVariable Long id,
-      @RequestBody Comment comment) {
-    service.updateComment(id, comment);
-    return;
+  public Optional<Comment> updateComment(@PathVariable long commentid, @RequestBody Comment Comment) {
+    CommentService.updateComment(commentid,Comment);
+    return CommentService.getCommentById(commentid);
   }
+
 }
