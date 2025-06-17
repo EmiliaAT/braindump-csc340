@@ -1,15 +1,15 @@
 package com.csc340_group_one.brain_dump.comment;
 
-import java.util.Optional;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 /**
  * CommentService is a service class that handles the business logic for
- * managing Comments.
- * It provides methods to perform CRUD operations on Comment data.
+ * managing Comments. It provides methods to perform CRUD operations on Comment
+ * data.
  */
 @Service
 public class CommentService {
@@ -17,15 +17,14 @@ public class CommentService {
   @Autowired
   private CommentRepository CommentRepository;
 
-
   /**
    * Method to get a Comment by ID
    *
    * @param CommentId The ID of the Comment to retrieve
    * @return The Comment with the specified ID
    */
-  public Optional<Comment> getCommentById(long commentid) {
-    return CommentRepository.findById(commentid);
+  public List<Comment> getCommentsByArticleId(long articleid) {
+    return CommentRepository.getCommentsByArticleId(articleid);
   }
 
   /**
@@ -34,36 +33,41 @@ public class CommentService {
    * @param Comment The Comment to add
    */
   public Comment addComment(Comment Comment) {
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String formattedNow = now.format(formatter);
+    Comment.setcreatedtimestamp(formattedNow);
     return CommentRepository.save(Comment);
   }
 
-  
   /**
    * Method to update a Comment
    *
-   * @param Comment   The updated Comment information
+   * @param Comment The updated Comment information
    */
-  
-  public Object updateComment(long commentid, Comment newComment) {
+  public void updateComment(long commentid, Comment newComment) {
     newComment.setcommentid(commentid);
-    return CommentRepository.save(newComment);
+    Comment oldComment = CommentRepository.findById(commentid);
+    newComment.setarticleid(oldComment.getarticleid());
+    newComment.setcreatedtimestamp(oldComment.getcreatedtimestamp());
+    newComment.setcommentuserid(oldComment.getcommentuserid());
+    newComment.setcommentusername(oldComment.getcommentusername());
+    if (oldComment.getcommentbody() != "*** Deleted Comment ***") {
+      CommentRepository.save(newComment);
+    }
+    ;
+    return;
   }
 
   /**
    * Method to update a Comment
    *
-   * @param Comment   The updated Comment information
+   * @param Comment The updated Comment information
    */
-  
-  public Object deleteComment(Comment newComment) {
-    return CommentRepository.findById(newComment.getcommentid()).map(Comment -> {
-        Comment.setcommentid(newComment.getcommentid());
-        Comment.setcommentbody("*** Deleted Comment ***");
-        Comment.setcreatedtimestamp(newComment.getcreatedtimestamp());
-        Comment.setarticleid(newComment.getarticleid());
-        Comment.setreplytocommentid(newComment.getreplytocommentid());
-        Comment.setcommentuserid(newComment.getcommentuserid());
-        return CommentRepository.save(Comment);
-      });
+  public void deleteComment(long commentid) {
+    Comment targetComment = CommentRepository.findById(commentid);
+    targetComment.setcommentbody("*** Deleted Comment ***");
+    CommentRepository.save(targetComment);
+    return;
   }
 }

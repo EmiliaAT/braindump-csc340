@@ -1,32 +1,26 @@
 package com.csc340_group_one.brain_dump.user;
 
-import java.time.Instant;
-import java.util.Optional;
-import java.util.Set;
-
 import com.csc340_group_one.brain_dump.article.Article;
 import com.csc340_group_one.brain_dump.collection.Collection;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 @Data
 @Entity
@@ -39,7 +33,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
-    @JsonProperty("user_id")
     private Long id;
 
     @NonNull
@@ -55,39 +48,31 @@ public class User {
     private String password;
 
     @NonNull
-    @Column(name = "created_by", nullable = false)
-    @JsonProperty("created_by")
-    private Instant createdBy;
-
-    @NonNull
-    @Column(name = "modified_by", nullable = false)
-    @JsonProperty("modified_by")
-    private Instant modifiedBy;
+    @OneToMany(mappedBy = "author")
+    // Substitute Articles for Article IDs.
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<Article> articles;
 
     @NonNull
     @OneToMany(mappedBy = "author")
-    @JsonIgnore
-    private Set<Article> articles;
+    // Substitute Collections for Collection IDs.
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<Collection> collections;
 
     @NonNull
-    @OneToMany(mappedBy = "author")
-    @JsonIgnore
-    private Set<Collection> collections;
+    @ManyToMany(mappedBy = "subscriptions")
+    // Substitute Users for User IDs.
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<User> subscribers;
 
-    @Getter(value = AccessLevel.NONE)
-    @Setter(value = AccessLevel.NONE)
-    @OneToOne(optional = true)
-    @JoinColumn(name = "homepage_id", nullable = true)
-    @JsonProperty("homepage_id")
-    @JsonIgnoreProperties("author_id")
-    private Article homepage;
-
-    public Optional<Article> getHomepage() {
-        return Optional.ofNullable(this.homepage);
-    }
-
-    public void setHomepage(Article article) {
-        this.homepage = article;
-    }
-
+    @NonNull
+    @ManyToMany
+    @JoinTable(name = "subscriptions", joinColumns = @JoinColumn(name = "subscriber", nullable = false), inverseJoinColumns = @JoinColumn(name = "subscribee", nullable = false))
+    // Substitute Users for User IDs.
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private List<User> subscriptions;
 }

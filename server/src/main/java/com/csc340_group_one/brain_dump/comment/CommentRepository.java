@@ -1,15 +1,16 @@
 package com.csc340_group_one.brain_dump.comment;
 
-/* import java.util.List; */
-import java.util.Optional;
-
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-/* import org.springframework.data.jpa.repository.Query; */
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    Optional<Comment> findById(long commentid);
+    Comment findById(long commentid);
 
+    @Query(value = "SELECT c.* FROM comments c WHERE c.article_id = ?1 order "
+            + "by c.comment_id desc", nativeQuery = true)
+    List<Comment> getCommentsByArticleId(long articleid);
 }

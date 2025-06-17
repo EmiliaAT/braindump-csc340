@@ -1,0 +1,14 @@
+/* Font Imports */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* Tailwind CSS */
+
+@import "tailwindcss";
+
+/* Default CSS */
+
+html {
+  font-family: Inter var, ui-sans-serif, system-ui, -apple-system;
+  font-feature-settings: "cv02","cv03","cv04","cv11";
+}
