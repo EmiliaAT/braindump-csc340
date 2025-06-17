@@ -1,10 +1,14 @@
 package com.csc340_group_one.brain_dump.collection;
 
+import java.time.Instant;
+import java.util.Set;
+
 import com.csc340_group_one.brain_dump.article.Article;
 import com.csc340_group_one.brain_dump.user.User;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +19,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,6 +36,7 @@ public class Collection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "collection_id", nullable = false)
+    @JsonProperty("collection_id")
     private Long id;
 
     @NonNull
@@ -40,22 +44,25 @@ public class Collection {
     private String title;
 
     @NonNull
-    @Column(name = "is_public", nullable = false)
-    private Boolean isPublic;
+    @Column(name = "created_by", nullable = false)
+    @JsonProperty("created_by")
+    private Instant createdBy;
+
+    @NonNull
+    @Column(name = "modified_by", nullable = false)
+    @JsonProperty("modified_by")
+    private Instant modifiedBy;
 
     @NonNull
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
-    // Substitute User for User ID.
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
+    @JsonIgnoreProperties("collections")
     private User author;
 
     @NonNull
     @ManyToMany
     @JoinTable(name = "collection_articles", joinColumns = @JoinColumn(name = "collection_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "article_id", nullable = false))
-    // Substitute Articles for Article IDs.
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
-    private List<Article> articles;
+    @JsonIgnore
+    private Set<Article> articles;
+
 }
