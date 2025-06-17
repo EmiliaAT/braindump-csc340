@@ -64,12 +64,6 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.38</version>
 		</dependency>
-
-		<dependency>
-			<artifactId>java-sdk</artifactId>
-			<groupId>com.descope</groupId>
-			<version>1.0.25</version>
-		</dependency>
 	</dependencies>
 
 	<build>
