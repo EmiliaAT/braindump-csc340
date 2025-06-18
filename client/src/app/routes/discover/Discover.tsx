@@ -4,6 +4,8 @@ import useCollections from "../../../features/collections/hooks/useCollections";
 import { Link, useNavigate } from "react-router";
 import useAuth from "../../../features/auth/hooks/useAuth";
 import useUsers from "../../../features/users/hooks/useUsers";
+import type Article from "../../../features/articles/types/Article";
+import type Collection from "../../../features/collections/types/Collection";
 
 export default function Discover() {
   const [users] = useUsers();
@@ -16,6 +18,8 @@ export default function Discover() {
   const [userId, authDispatch] = useAuth()!;
 
   const navigate = useNavigate();
+
+  const [filter, setFilter] = useState<string>();
 
   if (
     (panel == "article" && articles.isLoading) ||
@@ -46,10 +50,40 @@ export default function Discover() {
       ? undefined
       : users.data.find((user) => user.id == userId);
 
+  const filterSearch = (item: { title: string }) => {
+    return filter ? item.title.includes(filter) : true;
+  };
+
+  const renderArticle = (article: Article) => (
+    <p
+      key={`a-${String(article.id)}`}
+      className="cursor-pointer text-xl text-white"
+      onClick={() => void navigate(`/articles/${String(article.id)}`)}
+    >
+      {JSON.stringify(article, null, 2)}
+    </p>
+  );
+
+  const renderCollection = (collection: Collection) => (
+    <p
+      key={`c-${String(collection.id)}`}
+      className="cursor-pointer text-xl text-white"
+      onClick={() => void navigate(`/collections/${String(collection.id)}`)}
+    >
+      {JSON.stringify(collection, null, 2)}
+    </p>
+  );
+
   return (
-    <div className="min-h-screen min-w-screen dark:bg-neutral-950">
+    <div className="min-h-screen min-w-screen bg-neutral-950">
       <div className="flex w-full flex-row items-center justify-between gap-8 px-8 py-4">
-        <button type="button" className="cursor-pointer text-2xl text-white">
+        <button
+          type="button"
+          className="cursor-pointer text-2xl text-white"
+          onClick={() => {
+            void navigate("/");
+          }}
+        >
           Brain
           <span className="ml-1 rounded-xl bg-rose-600 px-2 py-2 font-extrabold">
             Dump
@@ -57,8 +91,11 @@ export default function Discover() {
         </button>
         <input
           type="text"
-          className="border-b-1 border-b-neutral-800 grow-1 mx-6 px-6 py-3 text-white"
+          className="mx-6 box-border grow-1 border-b-1 border-b-neutral-800 px-6 py-3 text-white"
           placeholder="Filter:"
+          onChange={(e) => {
+            setFilter(e.currentTarget.value);
+          }}
         />
         <div className="flex flex-row items-center gap-8">
           <Link className="cursor-pointer text-white underline" to="/discover">
@@ -78,7 +115,7 @@ export default function Discover() {
           </button>
         </div>
       </div>
-      <div className="p-8">
+      <div className="px-16 py-8">
         <button
           type="button"
           className="cursor-pointer text-xl font-bold text-white"
@@ -88,28 +125,8 @@ export default function Discover() {
         </button>
         <div>
           {panel == "article"
-            ? articles.data.map((article) => (
-                <p
-                  key={`a-${String(article.id)}`}
-                  className="cursor-pointer text-xl text-white"
-                  onClick={() =>
-                    void navigate(`/articles/${String(article.id)}`)
-                  }
-                >
-                  {JSON.stringify(article, null, 2)}
-                </p>
-              ))
-            : collections.data.map((collection) => (
-                <p
-                  key={`c-${String(collection.id)}`}
-                  className="cursor-pointer text-xl text-white"
-                  onClick={() =>
-                    void navigate(`/collections/${String(collection.id)}`)
-                  }
-                >
-                  {JSON.stringify(collection, null, 2)}
-                </p>
-              ))}
+            ? articles.data.filter(filterSearch).map(renderArticle)
+            : collections.data.filter(filterSearch).map(renderCollection)}
         </div>
       </div>
     </div>
