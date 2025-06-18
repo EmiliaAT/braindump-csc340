@@ -5,8 +5,11 @@ import { createAuth } from "../api/createAuth";
 import { getAuth } from "../api/getAuth";
 import type User from "../../users/types/User";
 import { AuthContext } from "../context/AuthContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function AuthProvider({ children }: PropsWithChildren) {
+  const client = useQueryClient();
+
   const [user, setUser] = useState<User["id"]>();
 
   const handleLogin = (action: AuthLogin) =>
@@ -22,8 +25,11 @@ export default function AuthProvider({ children }: PropsWithChildren) {
   const handleCreate = (action: AuthCreate) =>
     void createAuth(action.username, action.password).then((response) => {
       match(response)
-        .with({ status: 200 }, ({ data: { id } }) => {
-          setUser(id);
+        .with({ status: 200 }, ({ data }) => {
+          setUser(data.id);
+          client.setQueryData(["users"], (users: readonly User[]) =>
+            users.concat([data]),
+          );
           action.onSuccess?.();
         })
         .otherwise(() => action.onFailure?.());

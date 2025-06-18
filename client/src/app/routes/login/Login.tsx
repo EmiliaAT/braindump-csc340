@@ -1,12 +1,14 @@
 import { useState, type FormEvent } from "react";
 import useUsers from "../../../features/users/hooks/useUsers";
 import useAuth from "../../../features/auth/hooks/useAuth";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
+import Header from "../../../components/header/Header";
 
 export default function Login() {
   const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
 
-  const [, dispatch] = useAuth();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const [, dispatch] = useAuth()!;
 
   const [users] = useUsers();
 
@@ -104,24 +106,102 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <button type="button" onClick={handleToggle}>
-        {mode == "sign-in" ? "Switch to Sign Up" : "Switch to Sign In"}
-      </button>
-      {mode == "sign-in" ? (
-        <form key="sign-in" onSubmit={handleSignIn}>
-          <input id="username" type="text" placeholder="Username:" />
-          <input id="password" type="password" placeholder="Password:" />
-          <button type="submit">Submit</button>
-        </form>
-      ) : (
-        <form key="sign-up" onSubmit={handleSignUp}>
-          <input id="username" type="text" placeholder="New Username:" />
-          <input id="password" type="password" placeholder="New Password:" />
-          <input id="confirm" type="password" placeholder="Confirm Password:" />
-          <button type="submit">Submit</button>
-        </form>
-      )}
+    <div className="min-h-screen min-w-screen bg-neutral-950">
+      <Header>
+        <Link className="cursor-pointer text-white underline" to="/discover">
+          Discover
+        </Link>
+      </Header>
+      <div className="flex flex-col gap-8 px-16 py-8">
+        {/* <button type="button" className="text-white" onClick={handleToggle}> */}
+        {/*   {mode == "sign-in" ? "Switch to Sign Up" : "Switch to Sign In"} */}
+        {/* </button> */}
+        {mode == "sign-in" ? (
+          <form
+            key="sign-in"
+            className="flex flex-col gap-4 w-1/3 mx-auto"
+            onSubmit={handleSignIn}
+          >
+            <h2 className="text-white font-extrabold text-3xl mx-auto">
+              Sign In
+            </h2>
+            <input
+              id="username"
+              type="text"
+              className="px-6 py-3 text-white"
+              placeholder="Username:"
+            />
+            <input
+              id="password"
+              type="password"
+              className="px-6 py-3 text-white"
+              placeholder="Password:"
+            />
+            <div className="flex flex-row gap-4">
+              <button
+                type="submit"
+                className="rounded-xl bg-white w-1/2 px-6 py-3 font-bold cursor-pointer text-neutral-950"
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                className="text-white w-1/2 cursor-pointer font-bold"
+                onClick={() => {
+                  setMode("sign-up");
+                }}
+              >
+                ...or Sign Up
+              </button>
+            </div>
+          </form>
+        ) : (
+          <form
+            key="sign-up"
+            className="flex flex-col gap-4 w-1/3 mx-auto"
+            onSubmit={handleSignUp}
+          >
+            <h2 className="text-white font-extrabold text-3xl mx-auto">
+              Sign Up
+            </h2>
+            <input
+              id="username"
+              type="text"
+              className="px-6 py-3 text-white"
+              placeholder="New Username:"
+            />
+            <input
+              id="password"
+              type="password"
+              className="px-6 py-3 text-white"
+              placeholder="New Password:"
+            />
+            <input
+              id="confirm"
+              type="password"
+              className="px-6 py-3 text-white"
+              placeholder="Confirm Password:"
+            />
+            <div className="flex flex-row gap-4">
+              <button
+                type="submit"
+                className="rounded-xl bg-white w-1/2 px-6 py-3 font-bold cursor-pointer text-neutral-950"
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                className="text-white w-1/2 cursor-pointer font-bold"
+                onClick={() => {
+                  setMode("sign-in");
+                }}
+              >
+                ...or Sign In
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
     </div>
   );
 }

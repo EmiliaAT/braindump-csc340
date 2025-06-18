@@ -27,12 +27,14 @@ export default function Header({
         </span>
       </button>
       {/* Header Search */}
-      <input
-        type="text"
-        className="mx-6 box-border grow-1 border-b-1 border-b-neutral-800 px-6 py-3 text-white"
-        placeholder="Filter:"
-        onChange={onSearchChange}
-      />
+      {onSearchChange && (
+        <input
+          type="text"
+          className="mx-6 box-border grow-1 border-b-1 border-b-neutral-800 px-6 py-3 text-white"
+          placeholder="Filter:"
+          onChange={onSearchChange}
+        />
+      )}
       {/* Header Navbar */}
       <nav className="flex flex-row items-center gap-8">{children}</nav>
     </div>

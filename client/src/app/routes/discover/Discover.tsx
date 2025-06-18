@@ -34,10 +34,6 @@ export default function Discover() {
     return <p>An Error Occurred!</p>;
   }
 
-  const handleTogglePanel = () => {
-    setPanel(panel == "article" ? "collection" : "article");
-  };
-
   const handleAuthButton = () => {
     if (user === undefined) {
       void navigate("/login");
@@ -96,7 +92,7 @@ export default function Discover() {
           className="cursor-pointer rounded-xl bg-white px-6 py-3 font-bold text-neutral-950"
           onClick={handleAuthButton}
         >
-          {user === undefined ? "Log In" : "Sign Out"}
+          {user === undefined ? "Sign In" : "Sign Out"}
         </button>
       </Header>
       <div className="flex flex-col gap-8 px-16 py-8">

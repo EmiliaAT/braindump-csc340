@@ -4,6 +4,8 @@ import Discover from "./routes/discover/Discover";
 import Dashboard from "./routes/dashboard/Dashboard";
 import Login from "./routes/login/Login";
 import AuthProvider from "../features/auth/components/AuthProvider";
+import Article from "./routes/article/Article";
+import Collection from "./routes/collection/Collection";
 
 const client = new QueryClient();
 
@@ -17,6 +19,8 @@ export default function App() {
               <Route index element={<Navigate to="/discover" replace />} />
               <Route path="/discover" element={<Discover />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/articles/:id" element={<Article />} />
+              <Route path="/collections/:id" element={<Collection />} />
               <Route path="/login" element={<Login />} />
             </Route>
           </Routes>
