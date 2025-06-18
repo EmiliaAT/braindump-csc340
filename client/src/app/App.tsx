@@ -17,11 +17,11 @@ export default function App() {
           <Routes>
             <Route path="/">
               <Route index element={<Navigate to="/discover" replace />} />
-              <Route path="/discover" element={<Discover />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/articles/:id" element={<Article />} />
-              <Route path="/collections/:id" element={<Collection />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="discover" element={<Discover />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="articles/:id" element={<Article />} />
+              <Route path="collections/:id" element={<Collection />} />
+              <Route path="login" element={<Login />} />
             </Route>
           </Routes>
         </BrowserRouter>

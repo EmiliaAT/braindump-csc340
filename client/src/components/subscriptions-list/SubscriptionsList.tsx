@@ -1,7 +1,6 @@
 import { Navigate } from "react-router";
 import useAuth from "../../features/auth/hooks/useAuth";
 import useUsers from "../../features/users/hooks/useUsers";
-import type User from "../../features/users/types/User";
 
 export interface SubscriptionsListProps {
   onClose: () => void;
