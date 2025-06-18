@@ -1,4 +1,4 @@
-import { useNavigate, Link } from "react-router";
+import { useNavigate, Link, Navigate } from "react-router";
 import useArticles from "../../../features/articles/hooks/useArticles";
 import useAuth from "../../../features/auth/hooks/useAuth";
 import useCollections from "../../../features/collections/hooks/useCollections";
@@ -12,8 +12,8 @@ import SearchBar from "../../../components/search-bar/SearchBar";
 
 export default function Dashboard() {
   const [users] = useUsers();
-  const [articles] = useArticles();
-  const [collections] = useCollections();
+  const [articles, articlesDispatch] = useArticles();
+  const [collections, collectionsDispatch] = useCollections();
 
   const [panel, setPanel] = useState<"article" | "collection">("article");
 
@@ -46,7 +46,7 @@ export default function Dashboard() {
       : users.data.find((user) => user.id == userId);
 
   if (user === undefined) {
-    return <p>You need to be authenticated to view this page!</p>;
+    return <Navigate to="/" replace />;
   }
 
   const filterSearch = (item: { title: string }) => {
@@ -59,24 +59,48 @@ export default function Dashboard() {
       .map((sub) => sub.id)
       .includes(item.author);
 
-  const renderArticle = (article: Article) => (
-    <p
-      key={`a-${String(article.id)}`}
-      className="cursor-pointer text-xl text-white"
-      onClick={() => void navigate(`/articles/${String(article.id)}`)}
-    >
-      {JSON.stringify(article, null, 2)}
-    </p>
+  const renderArticle = (article: Article, removable: boolean) => (
+    <div key={`a-${String(article.id)}`} className="flex flex-col gap-4">
+      <p
+        className="cursor-pointer text-xl text-white"
+        onClick={() => void navigate(`/articles/${String(article.id)}`)}
+      >
+        {JSON.stringify(article, null, 2)}
+      </p>
+      {removable && (
+        <button
+          type="button"
+          className="w-full cursor-pointer rounded-xl bg-rose-500 px-6 py-3 font-bold text-white"
+          onClick={() => {
+            articlesDispatch({ kind: "delete", id: article.id });
+          }}
+        >
+          Delete
+        </button>
+      )}
+    </div>
   );
 
-  const renderCollection = (collection: Collection) => (
-    <p
-      key={`c-${String(collection.id)}`}
-      className="cursor-pointer text-xl text-white"
-      onClick={() => void navigate(`/collections/${String(collection.id)}`)}
-    >
-      {JSON.stringify(collection, null, 2)}
-    </p>
+  const renderCollection = (collection: Collection, removable: boolean) => (
+    <div key={`c-${String(collection.id)}`} className="flex flex-col gap-4">
+      <p
+        className="cursor-pointer text-xl text-white"
+        onClick={() => void navigate(`/collections/${String(collection.id)}`)}
+      >
+        {JSON.stringify(collection, null, 2)}
+      </p>
+      {removable && (
+        <button
+          type="button"
+          className="w-full cursor-pointer rounded-xl bg-rose-500 px-6 py-3 font-bold text-white"
+          onClick={() => {
+            collectionsDispatch({ kind: "delete", id: collection.id });
+          }}
+        >
+          Delete
+        </button>
+      )}
+    </div>
   );
 
   return (
@@ -110,29 +134,33 @@ export default function Dashboard() {
             setPanel("collection");
           }}
         />
-        <div>
+        <div className="flex flex-col gap-4">
           <h2 className="text-xl font-bold text-white">Subscriptions</h2>
-          {panel == "article"
-            ? articles.data
-                .filter(filterSearch)
-                .filter(filterSubscription)
-                .map(renderArticle)
-            : collections.data
-                .filter(filterSearch)
-                .filter(filterSubscription)
-                .map(renderCollection)}
+          <div className="grid grid-cols-4 gap-8">
+            {panel == "article"
+              ? articles.data
+                  .filter(filterSearch)
+                  .filter(filterSubscription)
+                  .map((article) => renderArticle(article, false))
+              : collections.data
+                  .filter(filterSearch)
+                  .filter(filterSubscription)
+                  .map((collection) => renderCollection(collection, false))}
+          </div>
         </div>
-        <div>
+        <div className="flex flex-col gap-4">
           <h2 className="text-xl font-bold text-white">{`My ${panel == "article" ? "Articles" : "Collections"}`}</h2>
-          {panel == "article"
-            ? articles.data
-                .filter(filterSearch)
-                .filter((article) => article.author == user.id)
-                .map(renderArticle)
-            : collections.data
-                .filter(filterSearch)
-                .filter((collection) => collection.author == user.id)
-                .map(renderCollection)}
+          <div className="grid grid-cols-4 gap-8">
+            {panel == "article"
+              ? articles.data
+                  .filter(filterSearch)
+                  .filter((article) => article.author == user.id)
+                  .map((article) => renderArticle(article, true))
+              : collections.data
+                  .filter(filterSearch)
+                  .filter((collection) => collection.author == user.id)
+                  .map((collection) => renderCollection(collection, true))}
+          </div>
         </div>
       </div>
     </div>

@@ -101,10 +101,6 @@ export default function Login() {
     });
   };
 
-  const handleToggle = () => {
-    setMode(mode == "sign-in" ? "sign-up" : "sign-in");
-  };
-
   return (
     <div className="min-h-screen min-w-screen bg-neutral-950">
       <Header>

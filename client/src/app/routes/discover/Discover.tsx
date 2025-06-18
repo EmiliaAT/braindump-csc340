@@ -105,7 +105,7 @@ export default function Discover() {
             setPanel("collection");
           }}
         />
-        <div>
+        <div className="gap-8 grid grid-cols-4">
           {panel == "article"
             ? articles.data.filter(filterSearch).map(renderArticle)
             : collections.data.filter(filterSearch).map(renderCollection)}
