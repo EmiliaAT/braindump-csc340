@@ -8,6 +8,7 @@ import type Article from "../../../features/articles/types/Article";
 import type Collection from "../../../features/collections/types/Collection";
 import Header from "../../../components/header/Header";
 import SearchBar from "../../../components/search-bar/SearchBar";
+import CollectionsList from "../../../components/collections-list/CollectionsList";
 
 export default function Discover() {
   const [users] = useUsers();
@@ -15,6 +16,8 @@ export default function Discover() {
   const [collections] = useCollections();
 
   const [panel, setPanel] = useState<"article" | "collection">("article");
+
+  const [collectionsMenu, setCollectionsMenu] = useState<Article["id"]>();
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const [userId, authDispatch] = useAuth()!;
@@ -53,13 +56,26 @@ export default function Discover() {
   };
 
   const renderArticle = (article: Article) => (
-    <p
-      key={`a-${String(article.id)}`}
-      className="cursor-pointer text-xl text-white"
-      onClick={() => void navigate(`/articles/${String(article.id)}`)}
-    >
-      {JSON.stringify(article, null, 2)}
-    </p>
+    <div key={`a-${String(article.id)}`} className="flex flex-col gap-4">
+      <p
+        className="cursor-pointer text-xl text-white"
+        onClick={() => void navigate(`/articles/${String(article.id)}`)}
+      >
+        {JSON.stringify(article, null, 2)}
+      </p>
+
+      {user && (
+        <button
+          type="button"
+          className="w-full cursor-pointer rounded-xl bg-white px-6 py-3 font-bold text-neutral-950"
+          onClick={() => {
+            setCollectionsMenu(article.id);
+          }}
+        >
+          Add To Collection
+        </button>
+      )}
+    </div>
   );
 
   const renderCollection = (collection: Collection) => (
@@ -73,44 +89,54 @@ export default function Discover() {
   );
 
   return (
-    <div className="min-h-screen min-w-screen bg-neutral-950">
-      <Header
-        onSearchChange={(e) => {
-          setFilter(e.currentTarget.value);
-        }}
-      >
-        <Link className="cursor-pointer text-white underline" to="/discover">
-          Discover
-        </Link>
-        {user !== undefined && (
-          <Link className="cursor-pointer text-white" to="/dashboard">
-            Dashboard
-          </Link>
-        )}
-        <button
-          type="button"
-          className="cursor-pointer rounded-xl bg-white px-6 py-3 font-bold text-neutral-950"
-          onClick={handleAuthButton}
-        >
-          {user === undefined ? "Sign In" : "Sign Out"}
-        </button>
-      </Header>
-      <div className="flex flex-col gap-8 px-16 py-8">
-        <SearchBar
-          panel={panel}
-          onSelectArticle={() => {
-            setPanel("article");
-          }}
-          onSelectCollection={() => {
-            setPanel("collection");
+    <>
+      {collectionsMenu != undefined && (
+        <CollectionsList
+          articleId={collectionsMenu}
+          onClose={() => {
+            setCollectionsMenu(undefined);
           }}
         />
-        <div className="gap-8 grid grid-cols-4">
-          {panel == "article"
-            ? articles.data.filter(filterSearch).map(renderArticle)
-            : collections.data.filter(filterSearch).map(renderCollection)}
+      )}
+      <div className="min-h-screen min-w-screen bg-neutral-950">
+        <Header
+          onSearchChange={(e) => {
+            setFilter(e.currentTarget.value);
+          }}
+        >
+          <Link className="cursor-pointer text-white underline" to="/discover">
+            Discover
+          </Link>
+          {user !== undefined && (
+            <Link className="cursor-pointer text-white" to="/dashboard">
+              Dashboard
+            </Link>
+          )}
+          <button
+            type="button"
+            className="cursor-pointer rounded-xl bg-white px-6 py-3 font-bold text-neutral-950"
+            onClick={handleAuthButton}
+          >
+            {user === undefined ? "Sign In" : "Sign Out"}
+          </button>
+        </Header>
+        <div className="flex flex-col gap-8 px-16 py-8">
+          <SearchBar
+            panel={panel}
+            onSelectArticle={() => {
+              setPanel("article");
+            }}
+            onSelectCollection={() => {
+              setPanel("collection");
+            }}
+          />
+          <div className="gap-8 grid grid-cols-4">
+            {panel == "article"
+              ? articles.data.filter(filterSearch).map(renderArticle)
+              : collections.data.filter(filterSearch).map(renderCollection)}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -7,8 +7,14 @@ export interface CollectionDelete {
   id: Collection["id"];
 }
 
+export interface CollectionAddArticle {
+  kind: "add-article";
+  collection: Collection["id"];
+  article: Article["id"];
+}
+
 export interface CollectionRemoveArticle {
-  kind: "remove";
+  kind: "remove-article";
   collection: Collection["id"];
   article: Article["id"];
 }
@@ -16,4 +22,5 @@ export interface CollectionRemoveArticle {
 export type CollectionAction =
   | QueryAction
   | CollectionDelete
+  | CollectionAddArticle
   | CollectionRemoveArticle;

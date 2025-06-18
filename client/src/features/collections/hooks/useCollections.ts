@@ -8,6 +8,7 @@ import {
   deleteCollection,
 } from "../api/deleteCollection";
 import type Article from "../../articles/types/Article";
+import { addArticleToCollection } from "../api/updateCollection";
 
 export default function useCollections() {
   const client = useQueryClient();
@@ -28,6 +29,18 @@ export default function useCollections() {
       ),
   });
 
+  const addArticleMutation = useMutation({
+    mutationFn: ({
+      id,
+      articleId,
+    }: {
+      id: Collection["id"];
+      articleId: Article["id"];
+    }) => addArticleToCollection(id, articleId),
+    onSuccess: () =>
+      client.invalidateQueries({ queryKey: ["collections", "articles"] }),
+  });
+
   const removeArticleMutation = useMutation({
     mutationFn: ({
       id,
@@ -46,7 +59,13 @@ export default function useCollections() {
       .with({ kind: "delete" }, ({ id }) => {
         deleteMutation.mutate(id);
       })
-      .with({ kind: "remove" }, ({ collection, article }) => {
+      .with({ kind: "add-article" }, ({ collection, article }) => {
+        addArticleMutation.mutate({
+          id: collection,
+          articleId: article,
+        });
+      })
+      .with({ kind: "remove-article" }, ({ collection, article }) => {
         removeArticleMutation.mutate({
           id: collection,
           articleId: article,

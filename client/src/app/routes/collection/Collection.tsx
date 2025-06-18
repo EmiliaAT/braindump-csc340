@@ -22,7 +22,7 @@ export default function Collection() {
 
   const navigate = useNavigate();
 
-  const [, setFilter] = useState<string>();
+  const [filter, setFilter] = useState<string>();
 
   if (articles.isLoading || collections.isLoading || users.isLoading) {
     return <p>Loading...</p>;
@@ -68,7 +68,7 @@ export default function Collection() {
           className="w-full cursor-pointer rounded-xl bg-rose-500 px-6 py-3 font-bold text-white"
           onClick={() => {
             collectionsDispatch({
-              kind: "remove",
+              kind: "remove-article",
               collection: collection.id,
               article: article.id,
             });
@@ -91,7 +91,7 @@ export default function Collection() {
           Discover
         </Link>
         {user !== undefined && (
-          <Link className="cursor-pointer text-white" to="/dashboard">
+          <Link className="cursor-pointer text-white underline" to="/dashboard">
             Dashboard
           </Link>
         )}

@@ -1,5 +1,7 @@
 package com.csc340_group_one.brain_dump.collection;
 
+import com.csc340_group_one.brain_dump.article.Article;
+import com.csc340_group_one.brain_dump.article.ArticleService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,51 +23,66 @@ import org.springframework.web.bind.annotation.RestController;
 public class CollectionController {
 
     @Autowired
-    private CollectionService service;
+    private CollectionService collectionService;
+
+    @Autowired
+    private ArticleService articleService;
 
     @GetMapping("")
     public List<Collection> getCollections() {
-        return this.service.getCollections();
+        return this.collectionService.getCollections();
     }
 
     @GetMapping("{id}")
     public Optional<Collection> getCollectionById(@PathVariable Long id) {
-        return this.service.getCollectionById(id);
+        return this.collectionService.getCollectionById(id);
     }
 
     @GetMapping("user/{authorId}")
     public List<Collection> getCollectionsByAuthorId(@PathVariable Long authorId) {
-        return this.service.getCollectionsByAuthorId(authorId);
+        return this.collectionService.getCollectionsByAuthorId(authorId);
     }
 
     @GetMapping("articles/{articleId}")
     public List<Collection> getCollectionsByArticleInclusion(@PathVariable Long articleId) {
-        return this.service.getCollectionsByArticleInclusion(articleId);
+        return this.collectionService.getCollectionsByArticleInclusion(articleId);
     }
 
     @GetMapping("title/{title}")
     public List<Collection> getCollectionsByTitle(@PathVariable String title) {
-        return this.service.getCollectionsByTitle(title);
+        return this.collectionService.getCollectionsByTitle(title);
     }
 
     @PostMapping("")
     public Optional<Collection> addCollection(@RequestBody Collection collection) {
-        return this.service.addCollection(collection);
+        return this.collectionService.addCollection(collection);
     }
 
     @PutMapping("{id}")
-    public Optional<Collection> updateCollection(@PathVariable Long id, @RequestBody Collection collection) {
-        System.out.println(collection);
-        return this.service.updateCollection(id, collection);
+    public void updateCollection(@PathVariable Long id,
+            @RequestParam Optional<Long> articleId) {
+        if (!articleId.isEmpty()) {
+            Optional<Collection> optCollection = this.collectionService.getCollectionById(id);
+            Optional<Article> optArticle = this.articleService.getArticleById(articleId.get());
+            if (optCollection.isEmpty() || optArticle.isEmpty()) {
+                return;
+            }
+            Collection collection = optCollection.get();
+            Article article = optArticle.get();
+            List<Article> articles = collection.getArticles();
+            articles.add(article);
+            collection.setArticles(articles);
+            this.collectionService.updateCollection(id, collection);
+        }
     }
 
     @DeleteMapping("{id}")
     public void deleteCollection(@PathVariable Long id,
             @RequestParam Optional<Long> articleId) {
         if (articleId.isEmpty()) {
-            this.service.deleteCollection(id);
+            this.collectionService.deleteCollection(id);
         } else {
-            Optional<Collection> optCollection = this.service.getCollectionById(id);
+            Optional<Collection> optCollection = this.collectionService.getCollectionById(id);
             if (optCollection.isEmpty()) {
                 return;
             }
@@ -75,7 +92,7 @@ public class CollectionController {
                             .stream()
                             .filter(article -> article.getId() != articleId.get())
                             .collect(Collectors.toList()));
-            this.service.updateCollection(id, collection);
+            this.collectionService.updateCollection(id, collection);
         }
     }
 }
