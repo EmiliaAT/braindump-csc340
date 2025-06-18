@@ -1,10 +1,5 @@
 import { useState, type PropsWithChildren } from "react";
-import type {
-  AuthAction,
-  AuthCreate,
-  AuthLogin,
-  AuthLogoff,
-} from "../types/AuthAction";
+import type { AuthAction, AuthCreate, AuthLogin } from "../types/AuthAction";
 import { match } from "ts-pattern";
 import { createAuth } from "../api/createAuth";
 import { getAuth } from "../api/getAuth";

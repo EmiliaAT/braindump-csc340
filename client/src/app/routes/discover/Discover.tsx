@@ -37,6 +37,7 @@ export default function Discover() {
       void navigate("/login");
     } else {
       authDispatch({ kind: "logoff" });
+      void navigate("/");
     }
   };
 
@@ -46,32 +47,41 @@ export default function Discover() {
       : users.data.find((user) => user.id == userId);
 
   return (
-    <div className="dark:bg-gray-900 min-h-screen min-w-screen">
-      <div className="flex flex-row justify-between w-full p-8 items-center">
-        <div />
-        <div />
-        <div className="flex flex-row gap-8">
-          <Link className="text-white text-xl cursor-pointer" to="/discover">
+    <div className="min-h-screen min-w-screen dark:bg-neutral-950">
+      <div className="flex w-full flex-row items-center justify-between gap-8 px-8 py-4">
+        <button type="button" className="cursor-pointer text-2xl text-white">
+          Brain
+          <span className="ml-1 rounded-xl bg-rose-600 px-2 py-2 font-extrabold">
+            Dump
+          </span>
+        </button>
+        <input
+          type="text"
+          className="border-b-1 border-b-neutral-800 grow-1 mx-6 px-6 py-3 text-white"
+          placeholder="Filter:"
+        />
+        <div className="flex flex-row items-center gap-8">
+          <Link className="cursor-pointer text-white underline" to="/discover">
             Discover
           </Link>
-          <Link className="text-white text-xl cursor-pointer" to="/dashboard">
-            Dashboard
-          </Link>
+          {user !== undefined && (
+            <Link className="cursor-pointer text-white" to="/dashboard">
+              Dashboard
+            </Link>
+          )}
           <button
             type="button"
-            className="text-white text-xl cursor-pointer"
+            className="cursor-pointer rounded-xl bg-white px-6 py-3 font-bold text-neutral-950"
             onClick={handleAuthButton}
           >
-            {user === undefined
-              ? "Login / Sign Up"
-              : `Sign Off [${user.username}]`}
+            {user === undefined ? "Log In" : "Sign Out"}
           </button>
         </div>
       </div>
       <div className="p-8">
         <button
           type="button"
-          className="text-white text-xl font-bold cursor-pointer"
+          className="cursor-pointer text-xl font-bold text-white"
           onClick={handleTogglePanel}
         >
           {panel == "article" ? "Articles" : "Collections"}
@@ -81,7 +91,7 @@ export default function Discover() {
             ? articles.data.map((article) => (
                 <p
                   key={`a-${String(article.id)}`}
-                  className="text-white text-xl cursor-pointer"
+                  className="cursor-pointer text-xl text-white"
                   onClick={() =>
                     void navigate(`/articles/${String(article.id)}`)
                   }
@@ -92,7 +102,7 @@ export default function Discover() {
             : collections.data.map((collection) => (
                 <p
                   key={`c-${String(collection.id)}`}
-                  className="text-white text-xl cursor-pointer"
+                  className="cursor-pointer text-xl text-white"
                   onClick={() =>
                     void navigate(`/collections/${String(collection.id)}`)
                   }
