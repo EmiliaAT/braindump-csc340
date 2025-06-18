@@ -2,6 +2,7 @@ package com.csc340_group_one.brain_dump.user;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -52,9 +54,22 @@ public class UserController {
     }
 
     @PutMapping("{id}")
-    public Optional<User> updateUser(@PathVariable Long id,
-            @RequestBody User user) {
+    public Optional<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         return this.service.updateUser(id, user);
+    }
+
+    @DeleteMapping("sub/{id}")
+    public void removeSubscriptionFromUser(@PathVariable Long id, @RequestParam Long subscribee) {
+        Optional<User> optSubscriber = this.service.getUserById(id);
+        if (optSubscriber.isEmpty()) {
+            return;
+        }
+        User subscriber = optSubscriber.get();
+        subscriber.setSubscriptions(
+                subscriber.getSubscriptions().stream()
+                        .filter(sub -> sub.getId() != subscribee)
+                        .collect(Collectors.toList()));
+        this.service.updateUser(id, subscriber);
     }
 
     @DeleteMapping("{id}")

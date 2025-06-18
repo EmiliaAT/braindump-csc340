@@ -54,6 +54,10 @@ export default function Collection() {
     return <Navigate to="/" replace />;
   }
 
+  const filterSearch = (item: { title: string }) => {
+    return filter ? item.title.includes(filter) : true;
+  };
+
   const renderArticle = (article: Article) => (
     <div key={`a-${String(article.id)}`} className="flex flex-col gap-4">
       <p
@@ -107,6 +111,7 @@ export default function Collection() {
         <div className="gap-8 grid grid-cols-4">
           {articles.data
             .filter((article) => article.collections.includes(collection.id))
+            .filter(filterSearch)
             .map(renderArticle)}
         </div>
       </div>
