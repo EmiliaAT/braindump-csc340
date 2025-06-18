@@ -31,11 +31,6 @@ public class UserController {
         return this.service.getUserById(id);
     }
 
-    @GetMapping("/email/{email}")
-    public Optional<User> getUserByEmail(@PathVariable String email) {
-        return this.service.getUserByEmail(email);
-    }
-
     @GetMapping("/name/{username}")
     public Optional<User> getUserByUsername(@PathVariable String username) {
         return this.service.getUserByUsername(username);

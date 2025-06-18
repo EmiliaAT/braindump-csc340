@@ -19,10 +19,6 @@ public class UserService {
         return this.repository.findById(id);
     }
 
-    public Optional<User> getUserByEmail(String email) {
-        return this.repository.getUserByEmail(email);
-    }
-
     public Optional<User> getUserByUsername(String username) {
         return this.repository.getUserByUsername(username);
     }

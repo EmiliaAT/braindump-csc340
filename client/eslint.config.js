@@ -35,6 +35,7 @@ export default tseslint.config(
       "react-refresh": reactRefresh,
     },
     rules: {
+      "no-unused-vars": ["warn", { varsIgnorePattern: "^_" }],
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": [
         "warn",
@@ -43,5 +44,5 @@ export default tseslint.config(
       ...reactX.configs["recommended-typescript"].rules,
       ...reactDom.configs.recommended.rules,
     },
-  }
+  },
 );

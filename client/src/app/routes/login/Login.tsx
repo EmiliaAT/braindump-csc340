@@ -3,11 +3,7 @@ import useUsers from "../../../features/users/hooks/useUsers";
 import useAuth from "../../../features/auth/hooks/useAuth";
 import { useNavigate } from "react-router";
 
-export interface LoginProps {
-  onSuccess?: () => void;
-}
-
-export default function Login({ onSuccess: onSuccess_ }: LoginProps) {
+export default function Login() {
   const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
 
   const [, dispatch] = useAuth();
@@ -22,8 +18,6 @@ export default function Login({ onSuccess: onSuccess_ }: LoginProps) {
   if (!users.data) {
     return <p>An Error Occurred!</p>;
   }
-
-  const onSuccess = onSuccess_ ?? (() => void navigate("/"));
 
   const handleSignIn = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,7 +52,7 @@ export default function Login({ onSuccess: onSuccess_ }: LoginProps) {
       kind: "login",
       username,
       password,
-      onSuccess,
+      onSuccess: () => void navigate("/"),
       onFailure: () => {
         alert("An error occurred!");
       },
@@ -98,7 +92,7 @@ export default function Login({ onSuccess: onSuccess_ }: LoginProps) {
       kind: "create",
       username,
       password,
-      onSuccess,
+      onSuccess: () => void navigate("/"),
       onFailure: () => {
         alert("An error occurred!");
       },

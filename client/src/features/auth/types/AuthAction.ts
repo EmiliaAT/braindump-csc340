@@ -14,4 +14,8 @@ export interface AuthCreate {
   onSuccess?: () => void;
 }
 
-export type AuthAction = AuthLogin | AuthCreate;
+export interface AuthLogoff {
+  kind: "logoff";
+}
+
+export type AuthAction = AuthLogin | AuthCreate | AuthLogoff;
