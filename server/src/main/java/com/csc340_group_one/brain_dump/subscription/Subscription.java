@@ -1,6 +1,6 @@
-package com.csc340_group_one.brain_dump.subscription;
+package com.safeplace.braindump.subscription;
 
-import java.time.Instant;
+//import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,32 +18,38 @@ public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subscription_id", nullable = false)
-    @JsonProperty("subscription_id")
+    @JsonProperty("subscriptionId")
     private Long    subscriptionid;
-    @Column(name = "created_timestamp", nullable = true)
-    @JsonProperty("created_timestamp")
-    private Instant createdtimestamp;
+    @Column(name = "subscription_created_timestamp", nullable = true)
+    @JsonProperty("subscriptionCreatedTimestamp")
+    private String subscriptioncreatedtimestamp;
     @Column(name = "subscriber_user_id", nullable = false)
-    @JsonProperty("subscriber_user_id")
+    @JsonProperty("subscriberUserId")
     private Long    subscriberuserid;
     @Column(name = "author_user_id", nullable = false)
-    @JsonProperty("author_user_id")
+    @JsonProperty("authorUserId")
     private Long    authoruserid;
+    @Column(name = "author_user_name", nullable = false)
+    @JsonProperty("authorUserName")
+    private String authorusername;
 
     public Subscription() {
     }
 
-    public Subscription(Long subscriptionid, Instant createdtimestamp, Long subscriberuserid, Long authoruserid ) {
+    public Subscription(Long subscriptionid, String subscriptioncreatedtimestamp, Long subscriberuserid,
+     Long authoruserid, String authorusername) {
         this.subscriptionid = subscriptionid;
-        this.createdtimestamp = createdtimestamp;
+        this.subscriptioncreatedtimestamp = subscriptioncreatedtimestamp;
         this.subscriberuserid = subscriberuserid;
         this.authoruserid = authoruserid;
+        this.authorusername = authorusername;
     }
 
-    public Subscription( Instant createdtimestamp, Long subscriberuserid, Long authoruserid ) {
-        this.createdtimestamp = createdtimestamp;
+    public Subscription( String subscriptioncreatedtimestamp, Long subscriberuserid, Long authoruserid, String authorusername) {
+        this.subscriptioncreatedtimestamp = subscriptioncreatedtimestamp;
         this.subscriberuserid = subscriberuserid;
         this.authoruserid = authoruserid;
+        this.authorusername = authorusername;
     }
 
     public Long getsubscriptionid() {
@@ -54,12 +60,12 @@ public class Subscription {
         this.subscriptionid = subscriptionid;
     }
 
-    public Instant getcreatedtimestamp() {
-        return createdtimestamp;
+    public String getsubscriptioncreatedtimestamp() {
+        return subscriptioncreatedtimestamp;
     }
 
-    public void setcreatedtimestamp() {
-        this.createdtimestamp = Instant.now();
+    public void setsubscriptioncreatedtimestamp(String subscriptioncreatedtimestamp) {
+        this.subscriptioncreatedtimestamp = subscriptioncreatedtimestamp;
     }
 
     public Long getsubscriberuserid() {
@@ -76,6 +82,14 @@ public class Subscription {
 
     public void setauthoruserid(Long authoruserid) {
         this.authoruserid = authoruserid;
+    }
+    
+    public String getauthorusername() {
+        return authorusername;
+    }
+
+    public void setauthorusername(String authorusername) {
+        this.authorusername = authorusername;
     }
 
 }

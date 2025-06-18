@@ -1,12 +1,12 @@
-package com.csc340_group_one.brain_dump.subscription;
+package com.safeplace.braindump.subscription;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.csc340_group_one.brain_dump.article.Article;
-import com.csc340_group_one.brain_dump.user.User;
+import com.safeplace.braindump.Article;
+import com.safeplace.braindump.User;
 
 
 /**
@@ -47,11 +47,11 @@ public class SubscriptionService {
    * @param Subscription   The updated Subscription information
    */
   
-  public long deleteSubscription(long subscriptionid) {
+  public List<Subscription> deleteSubscription(long subscriptionid) {
     Subscription oldSubscription = SubscriptionRepository.findById(subscriptionid);
     long oldsubscriberuserid = oldSubscription.getsubscriberuserid();
     SubscriptionRepository.deleteById(subscriptionid);
-    return oldsubscriberuserid;
+    return SubscriptionRepository.getSubscriptions(oldsubscriberuserid);
   }
 
   /**
@@ -70,5 +70,15 @@ public class SubscriptionService {
    */
   public List<Article> getSubscriptionArticles(long subscriberuserid){
     return SubscriptionRepository.getSubscriptionArticles(subscriberuserid);
+  }
+
+  /**
+   * Method to get a Subscription by ID
+   *
+   * @param SubscriptionuserId The ID of the Subscription to retrieve
+   * @return The Subscription with the specified ID
+   */
+  public List<Subscription> getSubscriptions(long subscriptionuserid) {
+    return SubscriptionRepository.getSubscriptions(subscriptionuserid);
   }
 }
