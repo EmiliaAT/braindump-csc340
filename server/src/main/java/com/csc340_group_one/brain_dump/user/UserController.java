@@ -58,6 +58,24 @@ public class UserController {
         return this.service.updateUser(id, user);
     }
 
+    @PostMapping("sub/{id}")
+    public void addSubscriptionToUser(@PathVariable Long id, @RequestParam Long subscribee) {
+        Optional<User> optSubscriber = this.service.getUserById(id);
+        Optional<User> optSubscribee = this.service.getUserById(subscribee);
+        if (optSubscriber.isEmpty() || optSubscribee.isEmpty()) {
+            return;
+        }
+        User subscriber_ = optSubscriber.get();
+        User subscribee_ = optSubscribee.get();
+        if (!subscriber_.getSubscriptions().stream()
+                .anyMatch(sub -> sub.getId() == subscribee_.getId())) {
+            List<User> subscriptions = subscriber_.getSubscriptions();
+            subscriptions.add(subscribee_);
+            subscriber_.setSubscriptions(subscriptions);
+        }
+        this.service.updateUser(subscriber_.getId(), subscriber_);
+    }
+
     @DeleteMapping("sub/{id}")
     public void removeSubscriptionFromUser(@PathVariable Long id, @RequestParam Long subscribee) {
         Optional<User> optSubscriber = this.service.getUserById(id);

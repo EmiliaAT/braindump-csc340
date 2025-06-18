@@ -9,7 +9,7 @@ export default function Article() {
 
   const articleId = id ? Number(id) : undefined;
 
-  const [users] = useUsers();
+  const [users, usersDispatch] = useUsers();
   const [articles] = useArticles();
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -43,9 +43,15 @@ export default function Article() {
       ? undefined
       : articles.data.find((article) => article.id == articleId);
 
-  if (article === undefined) {
+  const author = users.data.find((user) => user.id == article?.author);
+
+  if (article === undefined || author === undefined) {
     return <Navigate to="/" replace />;
   }
+
+  const subscriptions = users.data.filter((_user) => {
+    return user?.subscriptions.includes(_user.id);
+  });
 
   return (
     <div className="min-h-screen min-w-screen bg-neutral-950">
@@ -71,16 +77,30 @@ export default function Article() {
               {article.title}
             </h2>
             <h2 className="py-3 text-2xl font-extrabold text-neutral-700">
-              - by{" "}
-              {users.data.find((user) => user.id == article.author)?.username}
+              - by {author.username}
             </h2>
           </div>
-          <button
-            type="button"
-            className="rounded-xl bg-white px-6 py-3 text-xl text-neutral-950"
-          >
-            Subscribe
-          </button>
+          {user !== undefined &&
+            user.id != author.id &&
+            (subscriptions.map((sub) => sub.id).includes(author.id) ? (
+              <h2 className="rounded-xl bg-white px-6 py-3 text-xl text-neutral-950">
+                Subscribed!
+              </h2>
+            ) : (
+              <button
+                type="button"
+                className="rounded-xl bg-white px-6 py-3 text-xl text-neutral-950 cursor-pointer"
+                onClick={() => {
+                  usersDispatch({
+                    kind: "add-subscription",
+                    subscriber: user.id,
+                    subscribee: author.id,
+                  });
+                }}
+              >
+                Subscribe
+              </button>
+            ))}
         </div>
         <div className="border-b-1 border-b-white" />
         <p className="border-l-2 border-l-neutral-800 my-3 pl-4 text-xl text-white">

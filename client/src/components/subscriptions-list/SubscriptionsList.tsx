@@ -28,13 +28,9 @@ export default function SubscriptionsList({ onClose }: SubscriptionsListProps) {
     return <Navigate to="/" replace />;
   }
 
-  console.log(user.subscriptions);
-
   const subscriptions = users.data.filter((_user) => {
     return user.subscriptions.includes(_user.id);
   });
-
-  console.log("END: ", subscriptions);
 
   return (
     <div className="z-10 fixed w-screen h-screen bg-[#17171780] flex">
