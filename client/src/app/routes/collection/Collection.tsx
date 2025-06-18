@@ -58,31 +58,37 @@ export default function Collection() {
     return filter ? item.title.includes(filter) : true;
   };
 
-  const renderArticle = (article: Article) => (
-    <div key={`a-${String(article.id)}`} className="flex flex-col gap-4">
-      <p
-        className="cursor-pointer text-xl text-white"
-        onClick={() => void navigate(`/articles/${String(article.id)}`)}
+  const renderArticle = (article: Article) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const author = users.data.find((user) => user.id == article.author)!;
+
+    return (
+      <div
+        key={`a-${String(article.id)}`}
+        className="flex flex-col gap-4 border-2 rounded-xl border-white p-4 cursor-pointer"
       >
-        {JSON.stringify(article, null, 2)}
-      </p>
-      {collection.author == user?.id && (
-        <button
-          type="button"
-          className="w-full cursor-pointer rounded-xl bg-rose-500 px-6 py-3 font-bold text-white"
-          onClick={() => {
-            collectionsDispatch({
-              kind: "remove-article",
-              collection: collection.id,
-              article: article.id,
-            });
-          }}
-        >
-          Remove
-        </button>
-      )}
-    </div>
-  );
+        <div onClick={() => void navigate(`/articles/${String(article.id)}`)}>
+          <p className="text-xl text-white font-bold">{collection.title}</p>
+          <p className="text-neutral-300">by {author.username}</p>
+        </div>
+        {collection.author == user?.id && (
+          <button
+            type="button"
+            className="w-full cursor-pointer rounded-xl bg-rose-500 px-6 py-3 font-bold text-white"
+            onClick={() => {
+              collectionsDispatch({
+                kind: "remove-article",
+                collection: collection.id,
+                article: article.id,
+              });
+            }}
+          >
+            Remove
+          </button>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen min-w-screen bg-neutral-950">

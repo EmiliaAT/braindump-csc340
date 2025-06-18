@@ -55,38 +55,52 @@ export default function Discover() {
     return filter ? item.title.includes(filter) : true;
   };
 
-  const renderArticle = (article: Article) => (
-    <div key={`a-${String(article.id)}`} className="flex flex-col gap-4">
-      <p
-        className="cursor-pointer text-xl text-white"
-        onClick={() => void navigate(`/articles/${String(article.id)}`)}
+  const renderArticle = (article: Article) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const author = users.data.find((user) => user.id == article.author)!;
+
+    return (
+      <div
+        key={`a-${String(article.id)}`}
+        className="flex flex-col gap-4 border-2 rounded-xl border-white p-4 cursor-pointer"
       >
-        {JSON.stringify(article, null, 2)}
-      </p>
+        <div onClick={() => void navigate(`/articles/${String(article.id)}`)}>
+          <p className="text-xl text-white font-bold">{article.title}</p>
+          <p className="text-neutral-300">by {author.username}</p>
+        </div>
 
-      {user && (
-        <button
-          type="button"
-          className="w-full cursor-pointer rounded-xl bg-white px-6 py-3 font-bold text-neutral-950"
-          onClick={() => {
-            setCollectionsMenu(article.id);
-          }}
-        >
-          Add To Collection
-        </button>
-      )}
-    </div>
-  );
+        {user && (
+          <button
+            type="button"
+            className="w-full cursor-pointer rounded-xl bg-white px-6 py-3 font-bold text-neutral-950"
+            onClick={() => {
+              setCollectionsMenu(article.id);
+            }}
+          >
+            Add To Collection
+          </button>
+        )}
+      </div>
+    );
+  };
 
-  const renderCollection = (collection: Collection) => (
-    <p
-      key={`c-${String(collection.id)}`}
-      className="cursor-pointer text-xl text-white"
-      onClick={() => void navigate(`/collections/${String(collection.id)}`)}
-    >
-      {JSON.stringify(collection, null, 2)}
-    </p>
-  );
+  const renderCollection = (collection: Collection) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const author = users.data.find((user) => user.id == collection.author)!;
+
+    return (
+      <div
+        onClick={() => void navigate(`/collections/${String(collection.id)}`)}
+        key={`c-${String(collection.id)}`}
+        className="flex flex-col gap-4 border-2 rounded-xl border-white p-4 cursor-pointer"
+      >
+        <div>
+          <p className="text-xl text-white font-bold">{collection.title}</p>
+          <p className="text-neutral-300">by {author.username}</p>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <>

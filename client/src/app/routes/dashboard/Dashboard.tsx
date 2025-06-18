@@ -62,49 +62,63 @@ export default function Dashboard() {
       .map((sub) => sub.id)
       .includes(item.author);
 
-  const renderArticle = (article: Article, removable: boolean) => (
-    <div key={`a-${String(article.id)}`} className="flex flex-col gap-4">
-      <p
-        className="cursor-pointer text-xl text-white"
-        onClick={() => void navigate(`/articles/${String(article.id)}`)}
-      >
-        {JSON.stringify(article, null, 2)}
-      </p>
-      {removable && (
-        <button
-          type="button"
-          className="w-full cursor-pointer rounded-xl bg-rose-500 px-6 py-3 font-bold text-white"
-          onClick={() => {
-            articlesDispatch({ kind: "delete", id: article.id });
-          }}
-        >
-          Delete
-        </button>
-      )}
-    </div>
-  );
+  const renderArticle = (article: Article, removable: boolean) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const author = users.data.find((user) => user.id == article.author)!;
 
-  const renderCollection = (collection: Collection, removable: boolean) => (
-    <div key={`c-${String(collection.id)}`} className="flex flex-col gap-4">
-      <p
-        className="cursor-pointer text-xl text-white"
-        onClick={() => void navigate(`/collections/${String(collection.id)}`)}
+    return (
+      <div
+        key={`a-${String(article.id)}`}
+        className="flex flex-col gap-4 border-2 rounded-xl border-white p-4 cursor-pointer"
       >
-        {JSON.stringify(collection, null, 2)}
-      </p>
-      {removable && (
-        <button
-          type="button"
-          className="w-full cursor-pointer rounded-xl bg-rose-500 px-6 py-3 font-bold text-white"
-          onClick={() => {
-            collectionsDispatch({ kind: "delete", id: collection.id });
-          }}
+        <div onClick={() => void navigate(`/articles/${String(article.id)}`)}>
+          <p className="text-xl text-white font-bold">{article.title}</p>
+          <p className="text-neutral-300">by {author.username}</p>
+        </div>
+        {removable && (
+          <button
+            type="button"
+            className="w-full cursor-pointer rounded-xl bg-rose-500 px-6 py-3 font-bold text-white"
+            onClick={() => {
+              articlesDispatch({ kind: "delete", id: article.id });
+            }}
+          >
+            Delete
+          </button>
+        )}
+      </div>
+    );
+  };
+
+  const renderCollection = (collection: Collection, removable: boolean) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const author = users.data.find((user) => user.id == collection.author)!;
+
+    return (
+      <div
+        key={`c-${String(collection.id)}`}
+        className="flex flex-col gap-4 border-2 rounded-xl border-white p-4 cursor-pointer"
+      >
+        <div
+          onClick={() => void navigate(`/collections/${String(collection.id)}`)}
         >
-          Delete
-        </button>
-      )}
-    </div>
-  );
+          <p className="text-xl text-white font-bold">{collection.title}</p>
+          <p className="text-neutral-300">by {author.username}</p>
+        </div>
+        {removable && (
+          <button
+            type="button"
+            className="w-full cursor-pointer rounded-xl bg-rose-500 px-6 py-3 font-bold text-white"
+            onClick={() => {
+              collectionsDispatch({ kind: "delete", id: collection.id });
+            }}
+          >
+            Delete
+          </button>
+        )}
+      </div>
+    );
+  };
 
   return (
     <>

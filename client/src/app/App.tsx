@@ -6,6 +6,7 @@ import Login from "./routes/login/Login";
 import AuthProvider from "../features/auth/components/AuthProvider";
 import Article from "./routes/article/Article";
 import Collection from "./routes/collection/Collection";
+import Create from "./routes/create/Create";
 
 const client = new QueryClient();
 
@@ -22,6 +23,7 @@ export default function App() {
               <Route path="articles/:id" element={<Article />} />
               <Route path="collections/:id" element={<Collection />} />
               <Route path="login" element={<Login />} />
+              <Route path="create" element={<Create />} />
             </Route>
           </Routes>
         </BrowserRouter>
