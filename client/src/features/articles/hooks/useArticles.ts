@@ -11,7 +11,7 @@ export default function useArticles() {
   const articles = useQuery({
     queryKey: ["articles"],
     queryFn: () => getArticles().then((articles) => articles.data),
-    staleTime: Infinity,
+    // staleTime: Infinity,
   });
 
   const deleteMutation = useMutation({
